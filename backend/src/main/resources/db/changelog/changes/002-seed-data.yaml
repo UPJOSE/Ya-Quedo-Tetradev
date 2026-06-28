@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-seed-data
+      author: tetradev
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO roles (name, description) VALUES
+              ('CUSTOMER', 'Customer who hires technicians'),
+              ('TECHNICIAN', 'Technician who offers services'),
+              ('ADMIN', 'Administrator of the platform')
+              ON CONFLICT (name) DO NOTHING;
+
+              INSERT INTO districts (name, city, province) VALUES
+              ('Miraflores', 'Lima', 'Lima'),
+              ('San Isidro', 'Lima', 'Lima'),
+              ('Barranco', 'Lima', 'Lima'),
+              ('Santiago de Surco', 'Lima', 'Lima'),
+              ('La Molina', 'Lima', 'Lima'),
+              ('San Borja', 'Lima', 'Lima'),
+              ('Magdalena', 'Lima', 'Lima'),
+              ('San Miguel', 'Lima', 'Lima'),
+              ('Lince', 'Lima', 'Lima'),
+              ('Jesús María', 'Lima', 'Lima')
+              ON CONFLICT (name) DO NOTHING;
+
+              INSERT INTO categories (name, description, icon_url) VALUES
+              ('Electricista', 'Servicios eléctricos residenciales y comerciales', 'https://res.cloudinary.com/demo/icon/electrician'),
+              ('Plomero', 'Instalación y reparación de tuberías y grifería', 'https://res.cloudinary.com/demo/icon/plumber'),
+              ('Pintor', 'Pintura interior y exterior', 'https://res.cloudinary.com/demo/icon/painter'),
+              ('Cerrajero', 'Apertura de puertas y cambio de cerraduras', 'https://res.cloudinary.com/demo/icon/locksmith'),
+              ('Técnico de computadoras', 'Reparación y mantenimiento de computadoras', 'https://res.cloudinary.com/demo/icon/computer'),
+              ('Técnico de electrodomésticos', 'Reparación de lavadoras, refrigeradoras y más', 'https://res.cloudinary.com/demo/icon/appliance')
+              ON CONFLICT (name) DO NOTHING;
+
+              INSERT INTO specialties (name, description, category_id) VALUES
+              ('Instalaciones eléctricas', 'Cableado e instalaciones eléctricas', (SELECT id FROM categories WHERE name = 'Electricista')),
+              ('Tableros eléctricos', 'Reparación de tableros y breakers', (SELECT id FROM categories WHERE name = 'Electricista')),
+              ('Iluminación LED', 'Instalación de luminarias LED', (SELECT id FROM categories WHERE name = 'Electricista')),
+              ('Reparación de fugas', 'Detección y reparación de fugas', (SELECT id FROM categories WHERE name = 'Plomero')),
+              ('Instalación de grifería', 'Cambio e instalación de grifos', (SELECT id FROM categories WHERE name = 'Plomero')),
+              ('Destape de desagües', 'Limpieza y destape de tuberías', (SELECT id FROM categories WHERE name = 'Plomero')),
+              ('Pintura interior', 'Pintura de paredes y techos', (SELECT id FROM categories WHERE name = 'Pintor')),
+              ('Pintura exterior', 'Fachadas y exteriores', (SELECT id FROM categories WHERE name = 'Pintor')),
+              ('Impermeabilización', 'Sellado y protección contra humedad', (SELECT id FROM categories WHERE name = 'Pintor')),
+              ('Apertura de puertas', 'Apertura de puertas sin daño', (SELECT id FROM categories WHERE name = 'Cerrajero')),
+              ('Cambio de cerraduras', 'Instalación de cerraduras nuevas', (SELECT id FROM categories WHERE name = 'Cerrajero')),
+              ('Copias de llaves', 'Duplicado de llaves', (SELECT id FROM categories WHERE name = 'Cerrajero')),
+              ('Reparación de laptops', 'Diagnóstico y reparación de laptops', (SELECT id FROM categories WHERE name = 'Técnico de computadoras')),
+              ('Mantenimiento de PC', 'Limpieza y optimización de PC', (SELECT id FROM categories WHERE name = 'Técnico de computadoras')),
+              ('Redes WiFi', 'Configuración de redes y routers', (SELECT id FROM categories WHERE name = 'Técnico de computadoras')),
+              ('Reparación de lavadoras', 'Mantenimiento de lavadoras', (SELECT id FROM categories WHERE name = 'Técnico de electrodomésticos')),
+              ('Reparación de refrigeradoras', 'Mantenimiento de refrigeradoras', (SELECT id FROM categories WHERE name = 'Técnico de electrodomésticos')),
+              ('Reparación de cocinas', 'Mantenimiento de cocinas a gas e induction', (SELECT id FROM categories WHERE name = 'Técnico de electrodomésticos'));
