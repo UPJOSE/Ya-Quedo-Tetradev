@@ -18,12 +18,13 @@ export default function RegisterPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingDistricts, setLoadingDistricts] = useState(true);
+  const [districtsError, setDistrictsError] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     catalogApi.getDistricts()
       .then(r => setDistricts(r.data))
-      .catch(() => {})
+      .catch(() => setDistrictsError(true))
       .finally(() => setLoadingDistricts(false));
   }, []);
 
@@ -162,6 +163,11 @@ export default function RegisterPage() {
               {loadingDistricts ? (
                 <div className="w-full border border-border rounded-xl px-4 py-3 text-sm text-muted flex items-center gap-2">
                   <Loader2 size={14} className="animate-spin" /> Cargando distritos...
+                </div>
+              ) : districtsError ? (
+                <div className="w-full border border-red-200 bg-red-50 rounded-xl px-4 py-3 text-sm text-red-600 flex items-center justify-between">
+                  <span>No se pudo cargar los distritos. ¿El servidor está activo?</span>
+                  <button type="button" onClick={() => { setDistrictsError(false); setLoadingDistricts(true); catalogApi.getDistricts().then(r => setDistricts(r.data)).catch(() => setDistrictsError(true)).finally(() => setLoadingDistricts(false)); }} className="text-xs underline ml-3 whitespace-nowrap">Reintentar</button>
                 </div>
               ) : (
                 <select
