@@ -85,8 +85,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    const json: ApiResponse<AuthResponseDto> = await res.json();
-    if (!res.ok) throw new Error(json.message || 'Error al registrarse');
+    const json = await res.json();
+    if (!res.ok) {
+      console.error('[Register error]', res.status, JSON.stringify(json));
+      if (res.status === 422 && json.data && typeof json.data === 'object') {
+        const fieldErrors = Object.values(json.data as Record<string, string>).join(' | ');
+        throw new Error(fieldErrors || json.message || 'Error de validación');
+      }
+      throw new Error(json.message || 'Error al registrarse');
+    }
     saveSession(json.data);
   }, [saveSession]);
 
