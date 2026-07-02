@@ -17,7 +17,7 @@ import java.util.List;
 
 @Tag(name = "Public", description = "Public endpoints that do not require authentication")
 @RestController
-@RequestMapping("/api/v1/public")
+@RequestMapping({"/api/v1/public", "/public"})
 @RequiredArgsConstructor
 public class PublicController {
 
@@ -26,7 +26,7 @@ public class PublicController {
     private final DistrictMapper districtMapper;
 
     @Operation(summary = "Service health check")
-    @GetMapping("/")
+    @GetMapping({"/", "/health"})
     public ResponseEntity<ApiResponse<String>> home() {
         return ResponseEntity.ok(ApiResponse.success("YaQuedo backend is running"));
     }
