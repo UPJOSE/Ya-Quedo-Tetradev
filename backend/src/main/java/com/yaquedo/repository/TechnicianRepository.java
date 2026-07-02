@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface TechnicianRepository extends JpaRepository<Technician, Long>, JpaSpecificationExecutor<Technician> {
 
-    @EntityGraph(attributePaths = {"user", "category", "specialties", "district"})
+    @EntityGraph(attributePaths = {"user", "user.district", "category", "specialties"})
     Page<Technician> findAll(Specification<Technician> spec, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user", "category", "specialties"})
