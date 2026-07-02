@@ -52,6 +52,18 @@ export class RegisterComponent implements OnInit {
       this.error.set('Por favor completa todos los campos obligatorios.');
       return;
     }
+    if (!/^\d{9}$/.test(this.phone)) {
+      this.error.set('El teléfono debe tener exactamente 9 dígitos.');
+      return;
+    }
+    if (this.password.length < 8) {
+      this.error.set('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(this.password)) {
+      this.error.set('La contraseña debe contener mayúscula, minúscula, número y carácter especial (@$!%*?&).');
+      return;
+    }
     if (this.password !== this.confirmPassword) {
       this.error.set('Las contraseñas no coinciden.');
       return;
@@ -75,8 +87,13 @@ export class RegisterComponent implements OnInit {
       })
       .subscribe({
         next: () => this.router.navigate(['/catalog']),
-        error: (err: { error?: { message?: string } }) => {
-          this.error.set(err?.error?.message || 'Error al registrarse. Verifica tus datos.');
+        error: (err: { status?: number; error?: { message?: string; data?: Record<string, string> } }) => {
+          if (err.status === 422 && err.error?.data && typeof err.error.data === 'object') {
+            const fieldErrors = Object.values(err.error.data).join(' | ');
+            this.error.set(fieldErrors || err.error.message || 'Error de validación.');
+          } else {
+            this.error.set(err?.error?.message || 'Error al registrarse. Verifica tus datos.');
+          }
           this.loading.set(false);
         },
       });
