@@ -1,6 +1,13 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 
-const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) || 'https://yaquedo-backend-3dfm.onrender.com/api/v1';
+function normalizeApiBase(url?: string): string {
+  const base = (url || 'https://yaquedo-backend-3dfm.onrender.com/api/v1').trim().replace(/\/+$/, '');
+  if (base.endsWith('/api/v1')) return base;
+  if (base.endsWith('/api')) return `${base}/v1`;
+  return `${base}/api/v1`;
+}
+
+const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL as string | undefined);
 const ACCESS_TOKEN_KEY = 'yq_access_token';
 const REFRESH_TOKEN_KEY = 'yq_refresh_token';
 const USER_KEY = 'yq_user';

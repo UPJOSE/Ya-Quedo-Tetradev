@@ -1,4 +1,11 @@
-const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) || 'https://yaquedo-backend-3dfm.onrender.com/api/v1';
+function normalizeApiBase(url?: string): string {
+  const base = (url || 'https://yaquedo-backend-3dfm.onrender.com/api/v1').trim().replace(/\/+$/, '');
+  if (base.endsWith('/api/v1')) return base;
+  if (base.endsWith('/api')) return `${base}/v1`;
+  return `${base}/api/v1`;
+}
+
+const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL as string | undefined);
 
 export interface ApiResponse<T> { success: boolean; message?: string; data: T; }
 
