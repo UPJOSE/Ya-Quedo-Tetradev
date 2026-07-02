@@ -171,7 +171,7 @@ export default function RegisterPage() {
                 >
                   <option value="">Selecciona tu distrito</option>
                   {districts.map(d => (
-                    <option key={d.id} value={d.id}>{d.name} — {d.city}</option>
+                    <option key={d.id} value={String(d.id)}>{d.name} — {d.city}</option>
                   ))}
                 </select>
               )}

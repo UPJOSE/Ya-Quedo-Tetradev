@@ -36,7 +36,7 @@ export default function ProfilePage() {
     setForm({
       firstName: u.firstName, lastName: u.lastName, phone: u.phone,
       address: u.address ?? '', biography: u.biography ?? '',
-      districtId: u.district?.id ?? '',
+      districtId: u.district?.id != null ? String(u.district.id) : '',
       preferredPaymentMethod: u.preferredPaymentMethod ?? '',
     });
   };
@@ -182,7 +182,7 @@ export default function ProfilePage() {
               ? <select value={form.districtId} onChange={e => set('districtId', e.target.value)}
                   className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                   <option value="">Selecciona tu distrito</option>
-                  {districts.map(d => <option key={d.id} value={d.id}>{d.name} — {d.city}</option>)}
+                  {districts.map(d => <option key={d.id} value={String(d.id)}>{d.name} — {d.city}</option>)}
                 </select>
               : <p className="py-3 px-4 bg-background rounded-xl text-sm text-text">
                   {user?.district ? `${user.district.name} — ${user.district.city}` : '—'}
