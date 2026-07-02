@@ -1,4 +1,4 @@
-const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8080/api/v1';
+const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) || 'https://yaquedo-backend-3dfm.onrender.com/api/v1';
 
 export interface ApiResponse<T> { success: boolean; message?: string; data: T; }
 
