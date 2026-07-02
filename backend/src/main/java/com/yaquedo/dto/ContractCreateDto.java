@@ -19,4 +19,6 @@ public class ContractCreateDto {
     private BigDecimal agreedPrice;
 
     private LocalDateTime scheduledDate;
+
+    private String address;
 }

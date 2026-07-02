@@ -136,6 +136,24 @@ export interface ProfileUpdateDto {
   preferredPaymentMethod?: string;
 }
 
+export interface ContractCreateDto {
+  technicianId: number;
+  description: string;
+  address: string;
+  agreedPrice?: number;
+  scheduledDate?: string;
+}
+
+export interface ContractDto {
+  id: number;
+  status: string;
+  description?: string;
+  address?: string;
+  agreedPrice?: number;
+  scheduledDate?: string;
+  createdAt: string;
+}
+
 export interface TechnicianSearchParams {
   keyword?: string;
   districtId?: number;

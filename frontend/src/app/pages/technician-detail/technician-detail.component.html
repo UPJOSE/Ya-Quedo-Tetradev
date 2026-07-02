@@ -151,7 +151,6 @@
 
         <!-- Right Column: Contact Card -->
         <div class="space-y-5">
-          <!-- Price & Contact -->
           <div class="bg-white rounded-2xl border border-gray-100 p-6 sticky top-24">
             <div class="mb-5">
               <p class="text-xs text-gray-400 uppercase font-semibold tracking-wide mb-1">Precio estimado</p>
@@ -159,17 +158,26 @@
             </div>
 
             @if (technician.available) {
-              <a
-                href="tel:{{ technician.phone }}"
-                class="w-full btn-primary flex items-center justify-center gap-2 py-3 mb-3"
+              <button
+                (click)="openModal()"
+                class="w-full btn-primary flex items-center justify-center gap-2 py-3 mb-3 text-sm font-semibold"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Contratar ahora
+              </button>
+              <a
+                href="tel:{{ technician.phone }}"
+                class="w-full flex items-center justify-center gap-2 py-2.5 mb-3 text-sm font-semibold border border-blue-200 text-blue-600 rounded-xl hover:bg-blue-50 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
-                Llamar ahora
+                Llamar
               </a>
             } @else {
-              <button disabled class="w-full py-3 bg-gray-100 text-gray-400 rounded-lg font-semibold text-sm cursor-not-allowed mb-3">
+              <button disabled class="w-full py-3 bg-gray-100 text-gray-400 rounded-xl font-semibold text-sm cursor-not-allowed mb-3">
                 No disponible actualmente
               </button>
             }
@@ -179,7 +187,7 @@
                 <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
-                <span>{{ technician.email }}</span>
+                <span class="truncate">{{ technician.email }}</span>
               </div>
               <div class="flex items-center gap-3 text-sm text-gray-600">
                 <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -194,3 +202,122 @@
     </div>
   }
 </div>
+
+<!-- Hire Modal -->
+@if (showModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" (click)="closeModal()">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg" (click)="$event.stopPropagation()">
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between p-6 border-b border-gray-100">
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">Solicitar servicio</h2>
+          <p class="text-sm text-gray-500 mt-0.5">{{ technician?.fullName }} · {{ technician?.categoryName }}</p>
+        </div>
+        <button (click)="closeModal()" class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors text-gray-500">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-6">
+        @if (contractSuccess()) {
+          <!-- Success state -->
+          <div class="text-center py-8">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">¡Solicitud enviada!</h3>
+            <p class="text-gray-500 text-sm mb-6">El técnico revisará tu solicitud y se pondrá en contacto contigo pronto.</p>
+            <button (click)="closeModal()" class="btn-primary px-8 py-2.5 text-sm">Entendido</button>
+          </div>
+        } @else {
+          <!-- Form -->
+          @if (contractError()) {
+            <div class="mb-4 flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              {{ contractError() }}
+            </div>
+          }
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                ¿Qué necesitas? <span class="text-red-500">*</span>
+              </label>
+              <textarea
+                [(ngModel)]="formDescription"
+                name="description"
+                rows="3"
+                placeholder="Describe el trabajo que necesitas. Ej: Necesito revisar la instalación eléctrica de mi departamento, hay un corto en el cuarto principal..."
+                class="input-field resize-none"
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                Dirección del servicio <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="formAddress"
+                name="address"
+                placeholder="Av. Arequipa 1234, Miraflores"
+                class="input-field"
+              />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Presupuesto (S/)</label>
+                <input
+                  type="number"
+                  [(ngModel)]="formAgreedPrice"
+                  name="agreedPrice"
+                  placeholder="Opcional"
+                  min="0"
+                  class="input-field"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha preferida</label>
+                <input
+                  type="datetime-local"
+                  [(ngModel)]="formScheduledDate"
+                  name="scheduledDate"
+                  class="input-field"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3 mt-6">
+            <button
+              (click)="closeModal()"
+              class="flex-1 py-3 border border-gray-200 text-gray-600 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button
+              (click)="submitContract()"
+              [disabled]="contractLoading()"
+              class="flex-1 btn-primary py-3 text-sm flex items-center justify-center gap-2"
+            >
+              @if (contractLoading()) {
+                <span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Enviando...
+              } @else {
+                Enviar solicitud
+              }
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
