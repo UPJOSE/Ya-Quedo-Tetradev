@@ -25,6 +25,12 @@ public class PublicController {
     private final com.yaquedo.repository.DistrictRepository districtRepository;
     private final DistrictMapper districtMapper;
 
+    @Operation(summary = "Service health check")
+    @GetMapping("/")
+    public ResponseEntity<ApiResponse<String>> home() {
+        return ResponseEntity.ok(ApiResponse.success("YaQuedo backend is running"));
+    }
+
     @Operation(summary = "Get all districts")
     @GetMapping("/districts")
     public ResponseEntity<ApiResponse<List<DistrictDto>>> getDistricts() {

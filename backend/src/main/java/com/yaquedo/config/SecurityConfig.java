@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/api/v1/auth/**").permitAll()
+                        .requestMatchers("/", "/error", "/favicon.ico", "/api/v1/auth/**").permitAll()
                         .requestMatchers("/swagger/**", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/actuator/**").permitAll()
                         .requestMatchers("/api/v1/public/**").permitAll()
