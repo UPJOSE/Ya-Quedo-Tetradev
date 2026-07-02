@@ -9,7 +9,9 @@ RUN mvn clean package -DskipTests -B
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/yaquedo-backend-1.0.0.jar app.jar
-COPY entrypoint.sh entrypoint.sh
-RUN chmod +x entrypoint.sh
+# copy entrypoint to absolute path and ensure executable
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 EXPOSE 8080
-CMD ["./entrypoint.sh"]
+# Use ENTRYPOINT so the script runs as PID 1 and sets env properly
+ENTRYPOINT ["/app/entrypoint.sh"]
