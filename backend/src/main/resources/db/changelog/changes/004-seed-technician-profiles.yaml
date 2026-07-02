@@ -49,16 +49,33 @@ databaseChangeLog:
               SELECT u.id, r.id FROM users u, roles r WHERE u.email = 'demo.customer@yaquedo.demo' AND r.name = 'CUSTOMER'
               AND NOT EXISTS (SELECT 1 FROM user_roles ur WHERE ur.user_id = u.id AND ur.role_id = r.id);
 
-              -- Create reviews for technicians
+              -- Create dummy contracts for seed reviews
+              INSERT INTO contracts (user_id, technician_id, status, finished_at)
+              SELECT
+                (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo'),
+                t.id,
+                'COMPLETED',
+                NOW() - INTERVAL '10 days'
+              FROM (SELECT id FROM technicians ORDER BY id LIMIT 20) t
+              WHERE NOT EXISTS (
+                SELECT 1 FROM contracts c
+                WHERE c.user_id = (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo')
+                  AND c.technician_id = t.id
+              );
+
+              -- Create reviews for technicians (referencing the dummy contracts)
               INSERT INTO reviews (contract_id, technician_id, user_id, rating, comment)
               SELECT
-                NULL,
-                t.id,
-                (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo'),
-                (4 + (ROW_NUMBER() OVER (PARTITION BY t.id ORDER BY t.id) % 2))::INTEGER,
+                c.id,
+                c.technician_id,
+                c.user_id,
+                (4 + (ROW_NUMBER() OVER (ORDER BY c.id) % 2))::INTEGER,
                 'Excelente servicio, muy profesional y puntual.'
-              FROM technicians t
-              LIMIT 20;
+              FROM contracts c
+              WHERE c.user_id = (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo')
+              AND NOT EXISTS (
+                SELECT 1 FROM reviews r WHERE r.contract_id = c.id
+              );
 
               -- Update technician review counts and ratings
               UPDATE technicians t

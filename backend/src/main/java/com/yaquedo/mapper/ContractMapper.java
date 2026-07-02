@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 public interface ContractMapper {
 
     @Mapping(source = "serviceRequest.id", target = "serviceRequestId")
-    @Mapping(source = "status.name", target = "status")
+    @Mapping(expression = "java(contract.getStatus() != null ? contract.getStatus().name() : null)", target = "status")
     ContractDto toDto(Contract contract);
 }
