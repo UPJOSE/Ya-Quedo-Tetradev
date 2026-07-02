@@ -9,8 +9,9 @@ import {
   RegisterRequestDto,
   UserDto,
 } from '../models/models';
+import { environment } from '../../environments/environment';
 
-const API_BASE = 'http://localhost:8080/api/v1';
+const API_BASE = environment.apiUrl;
 const ACCESS_TOKEN_KEY = 'yq_access_token';
 const REFRESH_TOKEN_KEY = 'yq_refresh_token';
 const USER_KEY = 'yq_user';

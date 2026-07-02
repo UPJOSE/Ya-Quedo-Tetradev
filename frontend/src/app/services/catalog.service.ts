@@ -10,8 +10,9 @@ import {
   TechnicianDetailDto,
   TechnicianSearchParams,
 } from '../models/models';
+import { environment } from '../../environments/environment';
 
-const API_BASE = 'http://localhost:8080/api/v1';
+const API_BASE = environment.apiUrl;
 
 @Injectable({ providedIn: 'root' })
 export class CatalogService {

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse, ContractCreateDto, ContractDto } from '../models/models';
+import { environment } from '../../environments/environment';
 
-const API_BASE = 'http://localhost:8080/api/v1';
+const API_BASE = environment.apiUrl;
 
 @Injectable({ providedIn: 'root' })
 export class ContractService {
