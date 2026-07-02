@@ -132,13 +132,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public ApiResponse<Void> logout(Long userId) {
-        refreshTokenRepository.deleteByUserId(userId);
+        refreshTokenRepository.deleteByUser_Id(userId);
         log.info("User logged out: {}", userId);
         return ApiResponse.success("Logout successful", null);
     }
 
     private void saveRefreshToken(User user, String token) {
-        refreshTokenRepository.findByUserId(user.getId()).ifPresent(refreshTokenRepository::delete);
+        refreshTokenRepository.deleteByUser_Id(user.getId());
 
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(user);
