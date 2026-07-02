@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut, User, LayoutGrid } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
 import { NAVIGATION_LINKS } from '../../constants/data';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { isLoggedIn, user, logout } = useAuth();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -19,9 +22,13 @@ const Navbar = () => {
   const scrollToSection = (href: string) => {
     setIsMobileMenuOpen(false);
     const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleLogout = () => {
+    logout();
+    setUserMenuOpen(false);
+    navigate('/');
   };
 
   return (
@@ -29,9 +36,7 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/80 backdrop-blur-lg shadow-sm border-b border-border'
-          : 'bg-transparent'
+        isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm border-b border-border' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -65,14 +70,46 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-4">
-            <Button variant="ghost" size="md">
-              Iniciar sesión
-            </Button>
-            <Button variant="primary" size="md">
-              Comenzar
-            </Button>
+          {/* Desktop CTA */}
+          <div className="hidden lg:flex items-center gap-4 relative">
+            {isLoggedIn ? (
+              <>
+                <Button variant="ghost" size="md" onClick={() => navigate('/catalog')}>
+                  <LayoutGrid size={16} className="mr-2" /> Catálogo
+                </Button>
+                <div className="relative">
+                  <button
+                    onClick={() => setUserMenuOpen(v => !v)}
+                    className="flex items-center gap-2 bg-background hover:bg-border/60 rounded-xl px-3 py-2 transition-colors"
+                  >
+                    <div className="w-7 h-7 bg-primary rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-xs">{user?.firstName?.charAt(0)}</span>
+                    </div>
+                    <span className="text-sm font-medium text-text">{user?.firstName}</span>
+                  </button>
+                  {userMenuOpen && (
+                    <div className="absolute right-0 top-12 w-48 bg-white rounded-2xl shadow-xl border border-border py-2 z-50">
+                      <button onClick={() => { navigate('/profile'); setUserMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-text hover:bg-background transition-colors">
+                        <User size={14} className="text-muted" /> Mi perfil
+                      </button>
+                      <div className="border-t border-border my-1" />
+                      <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                        <LogOut size={14} /> Cerrar sesión
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" size="md" onClick={() => navigate('/login')}>
+                  Iniciar sesión
+                </Button>
+                <Button variant="primary" size="md" onClick={() => navigate('/register')}>
+                  Comenzar
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -106,12 +143,28 @@ const Navbar = () => {
                 </button>
               ))}
               <div className="pt-4 space-y-3">
-                <Button variant="outline" size="md" className="w-full">
-                  Iniciar sesión
-                </Button>
-                <Button variant="primary" size="md" className="w-full">
-                  Comenzar
-                </Button>
+                {isLoggedIn ? (
+                  <>
+                    <Button variant="outline" size="md" className="w-full" onClick={() => { navigate('/catalog'); setIsMobileMenuOpen(false); }}>
+                      <LayoutGrid size={16} className="mr-2" /> Catálogo
+                    </Button>
+                    <Button variant="outline" size="md" className="w-full" onClick={() => { navigate('/profile'); setIsMobileMenuOpen(false); }}>
+                      <User size={16} className="mr-2" /> Mi perfil
+                    </Button>
+                    <Button variant="ghost" size="md" className="w-full text-red-600" onClick={handleLogout}>
+                      <LogOut size={16} className="mr-2" /> Cerrar sesión
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="outline" size="md" className="w-full" onClick={() => { navigate('/login'); setIsMobileMenuOpen(false); }}>
+                      Iniciar sesión
+                    </Button>
+                    <Button variant="primary" size="md" className="w-full" onClick={() => { navigate('/register'); setIsMobileMenuOpen(false); }}>
+                      Comenzar
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>

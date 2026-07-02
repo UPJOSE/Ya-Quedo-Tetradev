@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
 
 const CTA = () => {
+  const navigate = useNavigate();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -85,6 +87,7 @@ const CTA = () => {
                 variant="secondary"
                 size="lg"
                 className="bg-white text-primary hover:bg-gray-100 group"
+                onClick={() => navigate('/register')}
               >
                 Empezar ahora
                 <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -93,8 +96,9 @@ const CTA = () => {
                 variant="outline"
                 size="lg"
                 className="border-white text-white hover:bg-white/10"
+                onClick={() => navigate('/login')}
               >
-                Saber más
+                Iniciar sesión
               </Button>
             </motion.div>
           </div>

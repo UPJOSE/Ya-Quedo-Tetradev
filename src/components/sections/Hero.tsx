@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Zap, Shield, Clock, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
 import { HERO_STATS } from '../../constants/data';
 
 const Hero = () => {
+  const navigate = useNavigate();
   const iconMap = {
     'Técnicos verificados': Shield,
     'Satisfacción del cliente': Star,
@@ -86,12 +88,12 @@ const Hero = () => {
               transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button variant="primary" size="lg" className="group">
+              <Button variant="primary" size="lg" className="group" onClick={() => navigate('/register')}>
                 Encuentra un técnico
                 <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg">
-                Conviértete en técnico
+              <Button variant="outline" size="lg" onClick={() => navigate('/login')}>
+                Iniciar sesión
               </Button>
             </motion.div>
 
