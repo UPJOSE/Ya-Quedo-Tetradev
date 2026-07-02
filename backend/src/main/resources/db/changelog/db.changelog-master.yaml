@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changes/003-seed-technicians.yaml
   - include:
       file: db/changelog/changes/004-seed-technician-profiles.yaml
+  - include:
+      file: db/changelog/changes/005-seed-more-technicians.yaml

@@ -1,0 +1,159 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-seed-more-technicians
+      author: tetradev
+      changes:
+        - sql:
+            sql: |
+              -- Insert 25 more technician users (password: Password123!)
+              WITH new_tech_users AS (
+                INSERT INTO users (first_name, last_name, email, phone, password, biography, profile_image_url, district_id, enabled)
+                SELECT * FROM (VALUES
+                  ('Víctor', 'Paredes', 'victor.paredes@yaquedo.demo', '998100001', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Electricista con especialidad en paneles solares y energías renovables.', 'https://ui-avatars.com/api/?name=Victor+Paredes&background=3B82F6&color=fff', (SELECT id FROM districts WHERE name = 'Miraflores'), true),
+                  ('Héctor', 'Vásquez', 'hector.vasquez@yaquedo.demo', '998100002', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Plomero con certificación en instalaciones de gas doméstico y agua caliente.', 'https://ui-avatars.com/api/?name=Hector+Vasquez&background=10B981&color=fff', (SELECT id FROM districts WHERE name = 'San Isidro'), true),
+                  ('Óscar', 'Quispe', 'oscar.quispe@yaquedo.demo', '998100003', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Técnico en refrigeración y aire acondicionado con 12 años de experiencia.', 'https://ui-avatars.com/api/?name=Oscar+Quispe&background=F59E0B&color=fff', (SELECT id FROM districts WHERE name = 'Barranco'), true),
+                  ('Rodrigo', 'Salinas', 'rodrigo.salinas@yaquedo.demo', '998100004', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Cerrajero con experiencia en sistemas de seguridad y cámaras CCTV.', 'https://ui-avatars.com/api/?name=Rodrigo+Salinas&background=EF4444&color=fff', (SELECT id FROM districts WHERE name = 'Santiago de Surco'), true),
+                  ('Iván', 'Coronel', 'ivan.coronel@yaquedo.demo', '998100005', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Pintor decorador con técnicas de estuco y murales artísticos.', 'https://ui-avatars.com/api/?name=Ivan+Coronel&background=8B5CF6&color=fff', (SELECT id FROM districts WHERE name = 'La Molina'), true),
+                  ('Gustavo', 'Pacheco', 'gustavo.pacheco@yaquedo.demo', '998100006', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Electricista industrial con manejo de tableros trifásicos y automatización.', 'https://ui-avatars.com/api/?name=Gustavo+Pacheco&background=3B82F6&color=fff', (SELECT id FROM districts WHERE name = 'San Borja'), true),
+                  ('Nelson', 'Huanca', 'nelson.huanca@yaquedo.demo', '998100007', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Plomero especializado en destape de desagües y mantenimiento de redes.', 'https://ui-avatars.com/api/?name=Nelson+Huanca&background=10B981&color=fff', (SELECT id FROM districts WHERE name = 'Magdalena'), true),
+                  ('César', 'Tapia', 'cesar.tapia@yaquedo.demo', '998100008', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Técnico informático con especialidad en ciberseguridad y redes empresariales.', 'https://ui-avatars.com/api/?name=Cesar+Tapia&background=F59E0B&color=fff', (SELECT id FROM districts WHERE name = 'San Miguel'), true),
+                  ('Jaime', 'Espinoza', 'jaime.espinoza@yaquedo.demo', '998100009', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Pintor con 15 años aplicando técnicas de pintura al agua y esmalte.', 'https://ui-avatars.com/api/?name=Jaime+Espinoza&background=8B5CF6&color=fff', (SELECT id FROM districts WHERE name = 'Lince'), true),
+                  ('Walter', 'Ríos', 'walter.rios@yaquedo.demo', '998100010', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Técnico en electrodomésticos Samsung y LG con servicio a domicilio.', 'https://ui-avatars.com/api/?name=Walter+Rios&background=EF4444&color=fff', (SELECT id FROM districts WHERE name = 'Jesús María'), true),
+                  ('Enrique', 'Benavides', 'enrique.benavides@yaquedo.demo', '998100011', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Electricista con certificación en eficiencia energética y automatización del hogar.', 'https://ui-avatars.com/api/?name=Enrique+Benavides&background=3B82F6&color=fff', (SELECT id FROM districts WHERE name = 'Miraflores'), true),
+                  ('Felipe', 'Cárdenas', 'felipe.cardenas@yaquedo.demo', '998100012', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Plomero con experiencia en edificios multifamiliares y tanques elevados.', 'https://ui-avatars.com/api/?name=Felipe+Cardenas&background=10B981&color=fff', (SELECT id FROM districts WHERE name = 'San Isidro'), true),
+                  ('Jorge', 'Mamani', 'jorge.mamani@yaquedo.demo', '998100013', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Cerrajero con más de 20 años en el sector, especialidad en cajas fuertes.', 'https://ui-avatars.com/api/?name=Jorge+Mamani&background=EF4444&color=fff', (SELECT id FROM districts WHERE name = 'Barranco'), true),
+                  ('Alfredo', 'Zenteno', 'alfredo.zenteno@yaquedo.demo', '998100014', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Técnico de computadoras con especialidad en recuperación de datos.', 'https://ui-avatars.com/api/?name=Alfredo+Zenteno&background=F59E0B&color=fff', (SELECT id FROM districts WHERE name = 'Santiago de Surco'), true),
+                  ('Benjamín', 'Pinto', 'benjamin.pinto@yaquedo.demo', '998100015', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Pintor especialista en fachadas de concreto y acabados modernos.', 'https://ui-avatars.com/api/?name=Benjamin+Pinto&background=8B5CF6&color=fff', (SELECT id FROM districts WHERE name = 'La Molina'), true),
+                  ('Cristian', 'Mendívil', 'cristian.mendivil@yaquedo.demo', '998100016', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Electricista con amplia experiencia en instalaciones de cámaras de seguridad.', 'https://ui-avatars.com/api/?name=Cristian+Mendivil&background=3B82F6&color=fff', (SELECT id FROM districts WHERE name = 'San Borja'), true),
+                  ('Adolfo', 'Tello', 'adolfo.tello@yaquedo.demo', '998100017', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Técnico en electrodomésticos Bosch y Mabe, garantía incluida.', 'https://ui-avatars.com/api/?name=Adolfo+Tello&background=EF4444&color=fff', (SELECT id FROM districts WHERE name = 'Magdalena'), true),
+                  ('Edwin', 'Carrasco', 'edwin.carrasco@yaquedo.demo', '998100018', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Plomero con certificación en instalación de calentadores solares.', 'https://ui-avatars.com/api/?name=Edwin+Carrasco&background=10B981&color=fff', (SELECT id FROM districts WHERE name = 'San Miguel'), true),
+                  ('Leonel', 'Valdivia', 'leonel.valdivia@yaquedo.demo', '998100019', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Técnico informático con experiencia en soporte remoto y presencial.', 'https://ui-avatars.com/api/?name=Leonel+Valdivia&background=F59E0B&color=fff', (SELECT id FROM districts WHERE name = 'Lince'), true),
+                  ('Renato', 'Ibáñez', 'renato.ibanez@yaquedo.demo', '998100020', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Pintor con técnica de pintura decorativa y efectos especiales en paredes.', 'https://ui-avatars.com/api/?name=Renato+Ibanez&background=8B5CF6&color=fff', (SELECT id FROM districts WHERE name = 'Jesús María'), true),
+                  ('Alexis', 'Bautista', 'alexis.bautista@yaquedo.demo', '998100021', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Cerrajero con experiencia en apertura de vehículos y autos sin daños.', 'https://ui-avatars.com/api/?name=Alexis+Bautista&background=EF4444&color=fff', (SELECT id FROM districts WHERE name = 'Miraflores'), true),
+                  ('Teodoro', 'Huamán', 'teodoro.huaman@yaquedo.demo', '998100022', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Electricista con especialidad en sonido e instalación de home theater.', 'https://ui-avatars.com/api/?name=Teodoro+Huaman&background=3B82F6&color=fff', (SELECT id FROM districts WHERE name = 'San Isidro'), true),
+                  ('Mauricio', 'Quisbert', 'mauricio.quisbert@yaquedo.demo', '998100023', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Técnico en electrodomésticos con certificación oficial de marcas premium.', 'https://ui-avatars.com/api/?name=Mauricio+Quisbert&background=EF4444&color=fff', (SELECT id FROM districts WHERE name = 'Barranco'), true),
+                  ('Gerardo', 'Puma', 'gerardo.puma@yaquedo.demo', '998100024', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Plomero con amplia experiencia en instalación de piscinas y jacuzzis.', 'https://ui-avatars.com/api/?name=Gerardo+Puma&background=10B981&color=fff', (SELECT id FROM districts WHERE name = 'Santiago de Surco'), true),
+                  ('Lorenzo', 'Condori', 'lorenzo.condori@yaquedo.demo', '998100025', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', 'Técnico informático especialista en servidores y virtualización.', 'https://ui-avatars.com/api/?name=Lorenzo+Condori&background=F59E0B&color=fff', (SELECT id FROM districts WHERE name = 'La Molina'), true)
+                ) AS u(first_name, last_name, email, phone, password, biography, profile_image_url, district_id, enabled)
+                WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = u.email)
+                RETURNING id, email
+              )
+              INSERT INTO user_roles (user_id, role_id)
+              SELECT ntu.id, r.id FROM new_tech_users ntu, roles r WHERE r.name = 'TECHNICIAN';
+
+              -- Create technician profiles for the new users
+              INSERT INTO technicians (user_id, category_id, biography, experience_years, min_price, max_price, average_rating, total_reviews, completed_jobs, verified, available)
+              SELECT
+                u.id,
+                c.id,
+                u.biography,
+                (3 + (ROW_NUMBER() OVER (ORDER BY u.email) % 15))::INTEGER,
+                (40 + (ROW_NUMBER() OVER (ORDER BY u.email) % 160))::DECIMAL(10,2),
+                (140 + (ROW_NUMBER() OVER (ORDER BY u.email) % 360))::DECIMAL(10,2),
+                (3.2 + (ROW_NUMBER() OVER (ORDER BY u.email) % 9) * 0.2)::DECIMAL(3,2),
+                (5 + (ROW_NUMBER() OVER (ORDER BY u.email) % 80))::INTEGER,
+                (10 + (ROW_NUMBER() OVER (ORDER BY u.email) % 250))::INTEGER,
+                TRUE,
+                TRUE
+              FROM users u
+              JOIN categories c ON (
+                CASE
+                  WHEN u.email IN ('victor.paredes@yaquedo.demo','gustavo.pacheco@yaquedo.demo','enrique.benavides@yaquedo.demo','cristian.mendivil@yaquedo.demo','teodoro.huaman@yaquedo.demo') THEN c.name = 'Electricista'
+                  WHEN u.email IN ('hector.vasquez@yaquedo.demo','nelson.huanca@yaquedo.demo','felipe.cardenas@yaquedo.demo','edwin.carrasco@yaquedo.demo','gerardo.puma@yaquedo.demo') THEN c.name = 'Plomero'
+                  WHEN u.email IN ('ivan.coronel@yaquedo.demo','jaime.espinoza@yaquedo.demo','benjamin.pinto@yaquedo.demo','renato.ibanez@yaquedo.demo') THEN c.name = 'Pintor'
+                  WHEN u.email IN ('rodrigo.salinas@yaquedo.demo','jorge.mamani@yaquedo.demo','alexis.bautista@yaquedo.demo') THEN c.name = 'Cerrajero'
+                  WHEN u.email IN ('cesar.tapia@yaquedo.demo','alfredo.zenteno@yaquedo.demo','leonel.valdivia@yaquedo.demo','lorenzo.condori@yaquedo.demo') THEN c.name = 'Técnico de computadoras'
+                  WHEN u.email IN ('oscar.quispe@yaquedo.demo','walter.rios@yaquedo.demo','adolfo.tello@yaquedo.demo','mauricio.quisbert@yaquedo.demo') THEN c.name = 'Técnico de electrodomésticos'
+                  ELSE c.name = 'Electricista'
+                END
+              )
+              WHERE u.email LIKE '%@yaquedo.demo'
+                AND u.email IN (
+                  'victor.paredes@yaquedo.demo','hector.vasquez@yaquedo.demo','oscar.quispe@yaquedo.demo','rodrigo.salinas@yaquedo.demo','ivan.coronel@yaquedo.demo',
+                  'gustavo.pacheco@yaquedo.demo','nelson.huanca@yaquedo.demo','cesar.tapia@yaquedo.demo','jaime.espinoza@yaquedo.demo','walter.rios@yaquedo.demo',
+                  'enrique.benavides@yaquedo.demo','felipe.cardenas@yaquedo.demo','jorge.mamani@yaquedo.demo','alfredo.zenteno@yaquedo.demo','benjamin.pinto@yaquedo.demo',
+                  'cristian.mendivil@yaquedo.demo','adolfo.tello@yaquedo.demo','edwin.carrasco@yaquedo.demo','leonel.valdivia@yaquedo.demo','renato.ibanez@yaquedo.demo',
+                  'alexis.bautista@yaquedo.demo','teodoro.huaman@yaquedo.demo','mauricio.quisbert@yaquedo.demo','gerardo.puma@yaquedo.demo','lorenzo.condori@yaquedo.demo'
+                )
+                AND NOT EXISTS (SELECT 1 FROM technicians t WHERE t.user_id = u.id);
+
+              -- Assign specialties to new technicians
+              INSERT INTO technician_specialties (technician_id, specialty_id)
+              SELECT DISTINCT t.id, s.id
+              FROM technicians t
+              JOIN users u ON t.user_id = u.id
+              JOIN categories c ON t.category_id = c.id
+              JOIN specialties s ON s.category_id = c.id
+              WHERE u.email LIKE '%@yaquedo.demo'
+                AND u.email IN (
+                  'victor.paredes@yaquedo.demo','hector.vasquez@yaquedo.demo','oscar.quispe@yaquedo.demo','rodrigo.salinas@yaquedo.demo','ivan.coronel@yaquedo.demo',
+                  'gustavo.pacheco@yaquedo.demo','nelson.huanca@yaquedo.demo','cesar.tapia@yaquedo.demo','jaime.espinoza@yaquedo.demo','walter.rios@yaquedo.demo',
+                  'enrique.benavides@yaquedo.demo','felipe.cardenas@yaquedo.demo','jorge.mamani@yaquedo.demo','alfredo.zenteno@yaquedo.demo','benjamin.pinto@yaquedo.demo',
+                  'cristian.mendivil@yaquedo.demo','adolfo.tello@yaquedo.demo','edwin.carrasco@yaquedo.demo','leonel.valdivia@yaquedo.demo','renato.ibanez@yaquedo.demo',
+                  'alexis.bautista@yaquedo.demo','teodoro.huaman@yaquedo.demo','mauricio.quisbert@yaquedo.demo','gerardo.puma@yaquedo.demo','lorenzo.condori@yaquedo.demo'
+                )
+              AND NOT EXISTS (
+                SELECT 1 FROM technician_specialties ts WHERE ts.technician_id = t.id AND ts.specialty_id = s.id
+              );
+
+              -- Create dummy contracts and reviews for new technicians
+              INSERT INTO contracts (user_id, technician_id, status, finished_at)
+              SELECT
+                (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo'),
+                t.id,
+                'COMPLETED',
+                NOW() - (INTERVAL '1 day' * (5 + (t.id % 60)))
+              FROM technicians t
+              JOIN users u ON t.user_id = u.id
+              WHERE u.email IN (
+                'victor.paredes@yaquedo.demo','hector.vasquez@yaquedo.demo','oscar.quispe@yaquedo.demo','rodrigo.salinas@yaquedo.demo','ivan.coronel@yaquedo.demo',
+                'gustavo.pacheco@yaquedo.demo','nelson.huanca@yaquedo.demo','cesar.tapia@yaquedo.demo','jaime.espinoza@yaquedo.demo','walter.rios@yaquedo.demo',
+                'enrique.benavides@yaquedo.demo','felipe.cardenas@yaquedo.demo','jorge.mamani@yaquedo.demo','alfredo.zenteno@yaquedo.demo','benjamin.pinto@yaquedo.demo',
+                'cristian.mendivil@yaquedo.demo','adolfo.tello@yaquedo.demo','edwin.carrasco@yaquedo.demo','leonel.valdivia@yaquedo.demo','renato.ibanez@yaquedo.demo',
+                'alexis.bautista@yaquedo.demo','teodoro.huaman@yaquedo.demo','mauricio.quisbert@yaquedo.demo','gerardo.puma@yaquedo.demo','lorenzo.condori@yaquedo.demo'
+              )
+              AND NOT EXISTS (
+                SELECT 1 FROM contracts c
+                WHERE c.user_id = (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo')
+                  AND c.technician_id = t.id
+              );
+
+              INSERT INTO reviews (contract_id, technician_id, user_id, rating, comment)
+              SELECT
+                c.id,
+                c.technician_id,
+                c.user_id,
+                (4 + (ROW_NUMBER() OVER (ORDER BY c.id) % 2))::INTEGER,
+                CASE (ROW_NUMBER() OVER (ORDER BY c.id) % 5)
+                  WHEN 0 THEN 'Excelente trabajo, muy puntual y profesional.'
+                  WHEN 1 THEN 'Resolvió el problema rápidamente, lo recomiendo.'
+                  WHEN 2 THEN 'Buen servicio y precio justo.'
+                  WHEN 3 THEN 'Muy buena atención, quedé satisfecho.'
+                  ELSE 'Profesional confiable, volveré a contratarlo.'
+                END
+              FROM contracts c
+              JOIN technicians t ON c.technician_id = t.id
+              JOIN users u ON t.user_id = u.id
+              WHERE c.user_id = (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo')
+                AND u.email IN (
+                  'victor.paredes@yaquedo.demo','hector.vasquez@yaquedo.demo','oscar.quispe@yaquedo.demo','rodrigo.salinas@yaquedo.demo','ivan.coronel@yaquedo.demo',
+                  'gustavo.pacheco@yaquedo.demo','nelson.huanca@yaquedo.demo','cesar.tapia@yaquedo.demo','jaime.espinoza@yaquedo.demo','walter.rios@yaquedo.demo',
+                  'enrique.benavides@yaquedo.demo','felipe.cardenas@yaquedo.demo','jorge.mamani@yaquedo.demo','alfredo.zenteno@yaquedo.demo','benjamin.pinto@yaquedo.demo',
+                  'cristian.mendivil@yaquedo.demo','adolfo.tello@yaquedo.demo','edwin.carrasco@yaquedo.demo','leonel.valdivia@yaquedo.demo','renato.ibanez@yaquedo.demo',
+                  'alexis.bautista@yaquedo.demo','teodoro.huaman@yaquedo.demo','mauricio.quisbert@yaquedo.demo','gerardo.puma@yaquedo.demo','lorenzo.condori@yaquedo.demo'
+                )
+              AND NOT EXISTS (SELECT 1 FROM reviews r WHERE r.contract_id = c.id);
+
+              -- Update ratings and review counts for new technicians
+              UPDATE technicians t
+              SET total_reviews = (SELECT COUNT(*) FROM reviews r WHERE r.technician_id = t.id),
+                  average_rating = (SELECT ROUND(AVG(r.rating)::NUMERIC, 2) FROM reviews r WHERE r.technician_id = t.id)
+              FROM users u
+              WHERE t.user_id = u.id
+                AND u.email IN (
+                  'victor.paredes@yaquedo.demo','hector.vasquez@yaquedo.demo','oscar.quispe@yaquedo.demo','rodrigo.salinas@yaquedo.demo','ivan.coronel@yaquedo.demo',
+                  'gustavo.pacheco@yaquedo.demo','nelson.huanca@yaquedo.demo','cesar.tapia@yaquedo.demo','jaime.espinoza@yaquedo.demo','walter.rios@yaquedo.demo',
+                  'enrique.benavides@yaquedo.demo','felipe.cardenas@yaquedo.demo','jorge.mamani@yaquedo.demo','alfredo.zenteno@yaquedo.demo','benjamin.pinto@yaquedo.demo',
+                  'cristian.mendivil@yaquedo.demo','adolfo.tello@yaquedo.demo','edwin.carrasco@yaquedo.demo','leonel.valdivia@yaquedo.demo','renato.ibanez@yaquedo.demo',
+                  'alexis.bautista@yaquedo.demo','teodoro.huaman@yaquedo.demo','mauricio.quisbert@yaquedo.demo','gerardo.puma@yaquedo.demo','lorenzo.condori@yaquedo.demo'
+                );
