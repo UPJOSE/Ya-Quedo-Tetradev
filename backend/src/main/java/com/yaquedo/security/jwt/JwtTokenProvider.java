@@ -28,19 +28,39 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh-expiration-ms}")
     private long refreshExpirationMs;
 
+    public void validateConfig() {
+        try {
+            key();
+            log.info("JWT token provider initialized successfully");
+        } catch (Exception e) {
+            log.error("Failed to initialize JWT token provider: {}", e.getMessage(), e);
+            throw new RuntimeException("JWT configuration is invalid", e);
+        }
+    }
+
     private SecretKey key() {
+        if (jwtSecret == null || jwtSecret.isEmpty()) {
+            throw new IllegalStateException("JWT secret is not configured");
+        }
+
         String secret = jwtSecret.trim();
         byte[] keyBytes;
 
+        // Try to decode as base64 first
         try {
             keyBytes = Decoders.BASE64.decode(secret);
-        } catch (IllegalArgumentException ex) {
+            log.debug("JWT secret decoded as BASE64, length: {}", keyBytes.length);
+        } catch (Exception ex) {
+            // Fall back to UTF-8 encoding
             keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+            log.debug("JWT secret treated as plain text UTF-8, length: {}", keyBytes.length);
         }
 
+        // Ensure key is at least 32 bytes for HS512
         if (keyBytes.length < 32) {
             try {
                 keyBytes = MessageDigest.getInstance("SHA-256").digest(keyBytes);
+                log.debug("JWT secret padded with SHA-256, final length: {}", keyBytes.length);
             } catch (NoSuchAlgorithmException e) {
                 throw new IllegalStateException("Unable to derive JWT signing key", e);
             }

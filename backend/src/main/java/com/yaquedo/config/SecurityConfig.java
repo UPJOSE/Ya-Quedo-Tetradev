@@ -2,6 +2,7 @@ package com.yaquedo.config;
 
 import com.yaquedo.security.jwt.JwtAuthenticationEntryPoint;
 import com.yaquedo.security.jwt.JwtAuthenticationFilter;
+import com.yaquedo.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +56,12 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public Object jwtInitializer(JwtTokenProvider jwtTokenProvider) {
+        jwtTokenProvider.validateConfig();
+        return new Object();
     }
 
     @Bean
