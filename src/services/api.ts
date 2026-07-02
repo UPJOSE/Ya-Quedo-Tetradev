@@ -120,6 +120,23 @@ export const catalogApi = {
       .then(r => handleRes<TechnicianDetailDto>(r)),
 };
 
+export interface ContractCreateDto {
+  technicianId: number;
+  description: string;
+  address: string;
+  agreedPrice?: number;
+  scheduledDate?: string;
+}
+
+export const contractApi = {
+  create: (dto: ContractCreateDto, token: string | null) =>
+    fetch(`${API_BASE}/contracts`, {
+      method: 'POST',
+      headers: authHeaders(token),
+      body: JSON.stringify(dto),
+    }).then(r => handleRes<{ id: number }>(r)),
+};
+
 export const profileApi = {
   getProfile: (token: string | null) =>
     fetch(`${API_BASE}/profile`, { headers: authHeaders(token) })
