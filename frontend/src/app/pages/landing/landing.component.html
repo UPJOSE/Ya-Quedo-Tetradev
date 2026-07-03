@@ -1,0 +1,316 @@
+<!-- Hero Section -->
+<section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gray-50">
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Content -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/10 rounded-full mb-6">
+          <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/>
+          </svg>
+          <span class="text-blue-600 font-medium text-sm">Confiado por miles de peruanos</span>
+        </div>
+
+        <h1 class="text-5xl lg:text-7xl font-bold text-gray-900 leading-tight mb-6">
+          Encuentra técnicos confiables para tu hogar en
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">minutos</span>
+        </h1>
+
+        <p class="text-xl text-gray-500 mb-8 max-w-lg">
+          Contrata electricistas, plomeros, cerrajeros y profesionales de servicios para el hogar verificados con confianza.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a routerLink="/register" class="btn-primary inline-flex items-center gap-2 px-6 py-3 text-base">
+            Encuentra un técnico
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+          <a routerLink="/login" class="btn-outline px-6 py-3 text-base">
+            Iniciar sesión
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          @for (stat of heroStats; track stat.label) {
+            <div class="text-center lg:text-left">
+              <div class="text-3xl font-bold text-gray-900">{{ stat.value }}</div>
+              <p class="text-sm text-gray-500">{{ stat.label }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Right Illustration -->
+      <div class="relative hidden lg:block">
+        <div class="bg-white rounded-3xl shadow-2xl shadow-blue-600/10 p-8 border border-gray-100">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-500 rounded-2xl flex items-center justify-center">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-900">Técnico verificado</h3>
+              <p class="text-gray-500">Disponible ahora</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">Tiempo de respuesta</p>
+                  <p class="text-sm text-gray-500">8 minutos</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <span class="font-semibold">4.9</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">Experiencia</p>
+                  <p class="text-sm text-gray-500">5+ años</p>
+                </div>
+              </div>
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">Verificado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits Section -->
+<section id="benefits" class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Beneficios para todos</h2>
+      <p class="text-xl text-gray-500 max-w-2xl mx-auto">Ya sea que contrates u ofrezcas servicios, tenemos lo que necesitas</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12">
+      <!-- Customer Benefits -->
+      <div class="bg-white rounded-3xl p-8 border border-gray-100 h-full">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-12 h-12 bg-blue-600/10 rounded-xl flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900">Para clientes</h3>
+        </div>
+        <div class="space-y-6">
+          @for (benefit of customerBenefits; track benefit.title) {
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-blue-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900 mb-1">{{ benefit.title }}</h4>
+                <p class="text-sm text-gray-500">{{ benefit.description }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Technician Benefits -->
+      <div class="bg-white rounded-3xl p-8 border border-gray-100 h-full">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+            <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900">Para técnicos</h3>
+        </div>
+        <div class="space-y-6">
+          @for (benefit of technicianBenefits; track benefit.title) {
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900 mb-1">{{ benefit.title }}</h4>
+                <p class="text-sm text-gray-500">{{ benefit.description }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Cómo funciona</h2>
+      <p class="text-xl text-gray-500 max-w-2xl mx-auto">Empieza en cuatro simples pasos</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      @for (step of howItWorks; track step.step) {
+        <div class="relative">
+          <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100">
+            <div class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mb-6">
+              {{ step.step }}
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">{{ step.title }}</h3>
+            <p class="text-gray-500">{{ step.description }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-24 bg-gray-900">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl lg:text-5xl font-bold text-white mb-4">Números que hablan</h2>
+      <p class="text-xl text-gray-400 max-w-2xl mx-auto">Nuestro impacto en el mercado de servicios para el hogar</p>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      @for (stat of statistics; track stat.label) {
+        <div class="text-center">
+          <div class="text-5xl lg:text-6xl font-bold text-white mb-2">{{ stat.value }}</div>
+          <p class="text-gray-400 font-medium">{{ stat.label }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Lo que dicen nuestros usuarios</h2>
+      <p class="text-xl text-gray-500 max-w-2xl mx-auto">Experiencias reales de clientes y técnicos</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (t of testimonials; track t.name) {
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 h-full">
+          <div class="flex items-center gap-1 mb-6">
+            @for (s of starRange(t.rating); track s) {
+              <svg class="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+            }
+          </div>
+          <p class="text-gray-900 mb-6 leading-relaxed">"{{ t.quote }}"</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold">
+              {{ t.image }}
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-900">{{ t.name }}</h4>
+              <p class="text-sm text-gray-500">{{ t.occupation }}</p>
+              <p class="text-xs text-gray-400 mt-1">{{ t.location }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section id="faq" class="py-24 bg-white">
+  <div class="max-w-4xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Preguntas frecuentes</h2>
+      <p class="text-xl text-gray-500">Todo lo que necesitas saber sobre YA QUEDÓ</p>
+    </div>
+
+    <div class="space-y-4">
+      @for (faq of faqs; track faq.question; let i = $index) {
+        <button
+          (click)="toggleFaq(i)"
+          class="w-full text-left bg-gray-50 rounded-2xl border border-gray-100 p-6 hover:border-blue-300 transition-colors"
+        >
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-gray-900 pr-4">{{ faq.question }}</h3>
+            <svg
+              class="w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200"
+              [class.rotate-180]="openFaqIndex() === i"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          @if (openFaqIndex() === i) {
+            <p class="text-gray-500 mt-4 pt-4 border-t border-gray-200">{{ faq.answer }}</p>
+          }
+        </button>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-500 rounded-3xl p-12 lg:p-20">
+      <div class="relative z-10 text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full mb-6">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0v-1H3a1 1 0 010-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732L9.854 7.2l1.18-4.455A1 1 0 0112 2z"/>
+          </svg>
+          <span class="text-white font-medium text-sm">Únete a miles de usuarios felices</span>
+        </div>
+
+        <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6">¿Listo para contratar con confianza?</h2>
+        <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          Únete a miles de peruanos que confían en YA QUEDÓ para sus necesidades de servicios en el hogar. Empieza hoy.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a routerLink="/register" class="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-6 py-3 rounded-lg transition-colors duration-200 inline-flex items-center gap-2">
+            Empezar ahora
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+          <a routerLink="/login" class="border-2 border-white text-white hover:bg-white/10 font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
+            Iniciar sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
