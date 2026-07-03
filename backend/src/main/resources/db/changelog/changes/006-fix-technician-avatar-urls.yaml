@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-fix-technician-avatar-urls
+      author: tetradev
+      changes:
+        - sql:
+            sql: |
+              UPDATE users
+              SET profile_image_url = 'https://ui-avatars.com/api/?name=' || REPLACE(first_name, ' ', '+') || '+' || REPLACE(last_name, ' ', '+') || '&background=2563eb&color=fff&size=256&bold=true'
+              WHERE profile_image_url LIKE '%res.cloudinary.com/demo%';

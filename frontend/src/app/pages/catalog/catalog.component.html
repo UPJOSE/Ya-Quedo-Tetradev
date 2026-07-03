@@ -139,8 +139,8 @@
             <!-- Avatar + Name -->
             <div class="flex items-start gap-3 mb-4">
               <div class="relative flex-shrink-0">
-                @if (tech.profileImageUrl) {
-                  <img [src]="tech.profileImageUrl" [alt]="tech.fullName" class="w-14 h-14 rounded-2xl object-cover"/>
+                @if (tech.profileImageUrl && !failedImages.has(tech.id)) {
+                  <img [src]="tech.profileImageUrl" [alt]="tech.fullName" class="w-14 h-14 rounded-2xl object-cover" (error)="onImageError(tech.id)"/>
                 } @else {
                   <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-lg">
                     {{ tech.fullName.charAt(0) }}

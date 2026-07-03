@@ -22,6 +22,7 @@ export class TechnicianDetailComponent implements OnInit {
   contractLoading = signal(false);
   contractSuccess = signal(false);
   contractError = signal('');
+  imageFailed = signal(false);
 
   formDescription = '';
   formAddress = '';
@@ -109,5 +110,9 @@ export class TechnicianDetailComponent implements OnInit {
 
   starRange(): number[] {
     return [1, 2, 3, 4, 5];
+  }
+
+  onImageError(): void {
+    this.imageFailed.set(true);
   }
 }

@@ -18,6 +18,7 @@ import {
 })
 export class CatalogComponent implements OnInit {
   technicians: TechnicianCardDto[] = [];
+  failedImages = new Set<number>();
   categories: CategoryDto[] = [];
   districts: DistrictDto[] = [];
 
@@ -104,6 +105,10 @@ export class CatalogComponent implements OnInit {
 
   ratingArray(rating: number): number[] {
     return Array.from({ length: 5 }, (_, i) => i + 1);
+  }
+
+  onImageError(id: number): void {
+    this.failedImages.add(id);
   }
 
   formatPrice(min?: number, max?: number, currency?: string): string {

@@ -34,8 +34,8 @@
           <!-- Profile Card -->
           <div class="bg-white rounded-2xl border border-gray-100 p-6">
             <div class="flex items-start gap-5">
-              @if (technician.profileImageUrl) {
-                <img [src]="technician.profileImageUrl" [alt]="technician.fullName" class="w-24 h-24 rounded-2xl object-cover flex-shrink-0"/>
+              @if (technician.profileImageUrl && !imageFailed()) {
+                <img [src]="technician.profileImageUrl" [alt]="technician.fullName" class="w-24 h-24 rounded-2xl object-cover flex-shrink-0" (error)="onImageError()"/>
               } @else {
                 <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-3xl flex-shrink-0">
                   {{ technician.fullName.charAt(0) }}
