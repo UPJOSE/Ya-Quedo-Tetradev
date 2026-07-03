@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-seed-technician-profiles
+      author: tetradev
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO technicians (user_id, category_id, biography, experience_years, min_price, max_price, average_rating, total_reviews, completed_jobs, verified, available)
+              SELECT
+                u.id,
+                c.id,
+                u.biography,
+                (5 + (ROW_NUMBER() OVER () % 11))::INTEGER,
+                (50 + (ROW_NUMBER() OVER () % 150))::DECIMAL(10,2),
+                (150 + (ROW_NUMBER() OVER () % 350))::DECIMAL(10,2),
+                (3.5 + (ROW_NUMBER() OVER () % 6) / 2.0)::DECIMAL(3,2),
+                (ROW_NUMBER() OVER () % 50 + 10)::INTEGER,
+                (ROW_NUMBER() OVER () % 200 + 20)::INTEGER,
+                TRUE,
+                TRUE
+              FROM users u
+              JOIN categories c ON (
+                CASE
+                  WHEN u.email LIKE '%electricista%' OR u.email IN ('juan.rodriguez@yaquedo.demo','carlos.mendoza@yaquedo.demo','luis.fernandez@yaquedo.demo','gabriel.rojas@yaquedo.demo','francisco.navarro@yaquedo.demo') THEN c.name = 'Electricista'
+                  WHEN u.email LIKE '%plomero%' OR u.email IN ('pedro.sanchez@yaquedo.demo','miguel.torres@yaquedo.demo','andres.lopez@yaquedo.demo','hugo.silva@yaquedo.demo','marco.jimenez@yaquedo.demo') THEN c.name = 'Plomero'
+                  WHEN u.email LIKE '%pintor%' OR u.email IN ('diego.ramirez@yaquedo.demo','javier.castillo@yaquedo.demo','pablo.reyes@yaquedo.demo','emilio.aguilar@yaquedo.demo') THEN c.name = 'Pintor'
+                  WHEN u.email LIKE '%cerrajero%' OR u.email IN ('roberto.diaz@yaquedo.demo','fernando.vargas@yaquedo.demo','eduardo.cruz@yaquedo.demo') THEN c.name = 'Cerrajero'
+                  WHEN u.email LIKE '%computadora%' OR u.email IN ('alejandro.herrera@yaquedo.demo','daniel.moreno@yaquedo.demo','sergio.ortega@yaquedo.demo','raul.flores@yaquedo.demo','oscar.ruiz@yaquedo.demo') THEN c.name = 'Técnico de computadoras'
+                  ELSE c.name = 'Técnico de electrodomésticos'
+                END
+              )
+              WHERE u.email LIKE '%@yaquedo.demo';
+
+              -- Assign specialties based on category
+              INSERT INTO technician_specialties (technician_id, specialty_id)
+              SELECT t.id, s.id
+              FROM technicians t
+              JOIN users u ON t.user_id = u.id
+              JOIN categories c ON t.category_id = c.id
+              JOIN specialties s ON s.category_id = c.id
+              WHERE u.email LIKE '%@yaquedo.demo';
+
+              -- Create a dummy customer user for reviews
+              INSERT INTO users (first_name, last_name, email, phone, password, enabled, district_id)
+              SELECT 'Demo', 'Customer', 'demo.customer@yaquedo.demo', '999123456', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQz1jxgllFcJbZtgw2sZVUMfF2Rq', TRUE, (SELECT id FROM districts WHERE name = 'Miraflores')
+              WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'demo.customer@yaquedo.demo');
+
+              INSERT INTO user_roles (user_id, role_id)
+              SELECT u.id, r.id FROM users u, roles r WHERE u.email = 'demo.customer@yaquedo.demo' AND r.name = 'CUSTOMER'
+              AND NOT EXISTS (SELECT 1 FROM user_roles ur WHERE ur.user_id = u.id AND ur.role_id = r.id);
+
+              -- Create dummy contracts for seed reviews
+              INSERT INTO contracts (user_id, technician_id, status, finished_at)
+              SELECT
+                (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo'),
+                t.id,
+                'COMPLETED',
+                NOW() - INTERVAL '10 days'
+              FROM (SELECT id FROM technicians ORDER BY id LIMIT 20) t
+              WHERE NOT EXISTS (
+                SELECT 1 FROM contracts c
+                WHERE c.user_id = (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo')
+                  AND c.technician_id = t.id
+              );
+
+              -- Create reviews for technicians (referencing the dummy contracts)
+              INSERT INTO reviews (contract_id, technician_id, user_id, rating, comment)
+              SELECT
+                c.id,
+                c.technician_id,
+                c.user_id,
+                (4 + (ROW_NUMBER() OVER (ORDER BY c.id) % 2))::INTEGER,
+                'Excelente servicio, muy profesional y puntual.'
+              FROM contracts c
+              WHERE c.user_id = (SELECT id FROM users WHERE email = 'demo.customer@yaquedo.demo')
+              AND NOT EXISTS (
+                SELECT 1 FROM reviews r WHERE r.contract_id = c.id
+              );
+
+              -- Update technician review counts and ratings
+              UPDATE technicians t
+              SET total_reviews = (SELECT COUNT(*) FROM reviews r WHERE r.technician_id = t.id),
+                  average_rating = (SELECT AVG(r.rating) FROM reviews r WHERE r.technician_id = t.id)
+              WHERE EXISTS (SELECT 1 FROM reviews r WHERE r.technician_id = t.id);

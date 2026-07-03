@@ -1,0 +1,207 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-schema
+      author: tetradev
+      changes:
+        - sql:
+            sql: |
+              CREATE TABLE IF NOT EXISTS roles (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  name VARCHAR(50) NOT NULL UNIQUE,
+                  description VARCHAR(255)
+              );
+
+              CREATE TABLE IF NOT EXISTS districts (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  name VARCHAR(100) NOT NULL UNIQUE,
+                  city VARCHAR(100),
+                  province VARCHAR(100),
+                  country VARCHAR(50) DEFAULT 'Peru'
+              );
+
+              CREATE TABLE IF NOT EXISTS categories (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  name VARCHAR(100) NOT NULL UNIQUE,
+                  description VARCHAR(1000),
+                  icon_url VARCHAR(500)
+              );
+
+              CREATE TABLE IF NOT EXISTS specialties (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  name VARCHAR(100) NOT NULL,
+                  description VARCHAR(500),
+                  category_id BIGINT NOT NULL REFERENCES categories(id) ON DELETE CASCADE
+              );
+
+              CREATE TABLE IF NOT EXISTS users (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  first_name VARCHAR(100) NOT NULL,
+                  last_name VARCHAR(100) NOT NULL,
+                  email VARCHAR(150) NOT NULL UNIQUE,
+                  phone VARCHAR(20) UNIQUE,
+                  password VARCHAR(255) NOT NULL,
+                  address VARCHAR(255),
+                  biography VARCHAR(1000),
+                  profile_image_url VARCHAR(500),
+                  enabled BOOLEAN NOT NULL DEFAULT TRUE,
+                  email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+                  preferred_payment_method VARCHAR(50),
+                  district_id BIGINT REFERENCES districts(id)
+              );
+
+              CREATE TABLE IF NOT EXISTS user_roles (
+                  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                  role_id BIGINT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+                  PRIMARY KEY (user_id, role_id)
+              );
+
+              CREATE TABLE IF NOT EXISTS technicians (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  user_id BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+                  category_id BIGINT NOT NULL REFERENCES categories(id),
+                  biography VARCHAR(2000),
+                  experience_years INTEGER NOT NULL DEFAULT 0,
+                  id_document_url VARCHAR(500),
+                  certificate_url VARCHAR(500),
+                  min_price DECIMAL(10, 2),
+                  max_price DECIMAL(10, 2),
+                  price_currency VARCHAR(50) DEFAULT 'PEN',
+                  available BOOLEAN NOT NULL DEFAULT TRUE,
+                  verified BOOLEAN NOT NULL DEFAULT FALSE,
+                  completed_jobs INTEGER NOT NULL DEFAULT 0,
+                  average_rating DECIMAL(3, 2),
+                  total_reviews INTEGER NOT NULL DEFAULT 0
+              );
+
+              CREATE TABLE IF NOT EXISTS technician_specialties (
+                  technician_id BIGINT NOT NULL REFERENCES technicians(id) ON DELETE CASCADE,
+                  specialty_id BIGINT NOT NULL REFERENCES specialties(id) ON DELETE CASCADE,
+                  PRIMARY KEY (technician_id, specialty_id)
+              );
+
+              CREATE TABLE IF NOT EXISTS service_requests (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                  category_id BIGINT REFERENCES categories(id),
+                  description VARCHAR(2000),
+                  address VARCHAR(500),
+                  budget_max DECIMAL(10, 2),
+                  status VARCHAR(50) DEFAULT 'OPEN',
+                  preferred_date DATE,
+                  preferred_time TIME,
+                  urgency VARCHAR(20)
+              );
+
+              CREATE TABLE IF NOT EXISTS recommendations (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                  service_request_id BIGINT REFERENCES service_requests(id),
+                  detected_category VARCHAR(100),
+                  priority VARCHAR(50),
+                  estimated_duration VARCHAR(500),
+                  complexity VARCHAR(50),
+                  ai_explanation VARCHAR(2000),
+                  prompt VARCHAR(1000)
+              );
+
+              CREATE TABLE IF NOT EXISTS recommendation_skills (
+                  recommendation_id BIGINT NOT NULL REFERENCES recommendations(id) ON DELETE CASCADE,
+                  skill VARCHAR(100) NOT NULL,
+                  PRIMARY KEY (recommendation_id, skill)
+              );
+
+              CREATE TABLE IF NOT EXISTS recommendation_technicians (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  recommendation_id BIGINT NOT NULL REFERENCES recommendations(id) ON DELETE CASCADE,
+                  technician_id BIGINT NOT NULL REFERENCES technicians(id) ON DELETE CASCADE,
+                  match_score DECIMAL(5, 2),
+                  match_reason VARCHAR(500),
+                  distance_km DECIMAL(5, 2)
+              );
+
+              CREATE TABLE IF NOT EXISTS contracts (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                  technician_id BIGINT NOT NULL REFERENCES technicians(id) ON DELETE CASCADE,
+                  service_request_id BIGINT REFERENCES service_requests(id),
+                  description VARCHAR(2000),
+                  agreed_price DECIMAL(10, 2),
+                  price_currency VARCHAR(50) DEFAULT 'PEN',
+                  address VARCHAR(500),
+                  scheduled_date TIMESTAMP,
+                  status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+                  finished_at TIMESTAMP
+              );
+
+              CREATE TABLE IF NOT EXISTS reviews (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  contract_id BIGINT NOT NULL UNIQUE REFERENCES contracts(id) ON DELETE CASCADE,
+                  technician_id BIGINT NOT NULL REFERENCES technicians(id) ON DELETE CASCADE,
+                  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                  rating INTEGER NOT NULL,
+                  comment VARCHAR(2000)
+              );
+
+              CREATE TABLE IF NOT EXISTS notifications (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                  title VARCHAR(200) NOT NULL,
+                  message VARCHAR(2000),
+                  type VARCHAR(50),
+                  read BOOLEAN NOT NULL DEFAULT FALSE
+              );
+
+              CREATE TABLE IF NOT EXISTS refresh_tokens (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  user_id BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+                  token VARCHAR(500) NOT NULL UNIQUE,
+                  expiry_date TIMESTAMP NOT NULL
+              );
+
+              CREATE TABLE IF NOT EXISTS audit_logs (
+                  id BIGSERIAL PRIMARY KEY,
+                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  action VARCHAR(100) NOT NULL,
+                  actor_email VARCHAR(100),
+                  entity_type VARCHAR(100),
+                  entity_id BIGINT,
+                  details VARCHAR(2000),
+                  ip_address VARCHAR(50),
+                  user_agent VARCHAR(500)
+              );
+
+              CREATE INDEX idx_users_email ON users(email);
+              CREATE INDEX idx_users_phone ON users(phone);
+              CREATE INDEX idx_technicians_category ON technicians(category_id);
+              CREATE INDEX idx_technicians_rating ON technicians(average_rating);
+              CREATE INDEX idx_reviews_technician ON reviews(technician_id);
+              CREATE INDEX idx_contracts_user ON contracts(user_id);
+              CREATE INDEX idx_contracts_technician ON contracts(technician_id);
+              CREATE INDEX idx_recommendations_user ON recommendations(user_id);

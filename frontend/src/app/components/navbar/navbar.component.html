@@ -1,0 +1,115 @@
+<nav class="bg-white border-b border-gray-200 fixed top-0 left-0 right-0 z-50 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a routerLink="/catalog" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-sm">
+          <span class="text-white font-bold text-base">YQ</span>
+        </div>
+        <span class="text-xl font-bold text-gray-900">YA QUEDÓ</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-6">
+        <a
+          routerLink="/catalog"
+          routerLinkActive="text-blue-600 font-semibold"
+          class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors"
+        >
+          Catálogo
+        </a>
+
+        @if (authService.isLoggedIn()) {
+          <a
+            routerLink="/profile"
+            routerLinkActive="text-blue-600 font-semibold"
+            class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors"
+          >
+            Mi perfil
+          </a>
+
+          <!-- User dropdown -->
+          <div class="relative">
+            <button
+              (click)="menuOpen = !menuOpen"
+              class="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 rounded-xl px-3 py-2 transition-colors"
+            >
+              <div class="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center">
+                <span class="text-white font-semibold text-xs">
+                  {{ authService.currentUser()?.firstName?.charAt(0) }}
+                </span>
+              </div>
+              <span class="text-sm font-medium text-gray-700">
+                {{ authService.currentUser()?.firstName }}
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            @if (menuOpen) {
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-lg border border-gray-100 py-2 z-50">
+                <a routerLink="/profile" (click)="menuOpen = false" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                  </svg>
+                  Mi perfil
+                </a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <button (click)="logout()" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                  </svg>
+                  Cerrar sesión
+                </button>
+              </div>
+            }
+          </div>
+        } @else {
+          <a routerLink="/login" class="btn-ghost text-sm">Iniciar sesión</a>
+          <a routerLink="/register" class="btn-primary text-sm">Crear cuenta</a>
+        }
+      </div>
+
+      <!-- Mobile menu button -->
+      <button (click)="menuOpen = !menuOpen" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
+        @if (menuOpen) {
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  @if (menuOpen) {
+    <div class="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-2">
+      <a routerLink="/catalog" (click)="menuOpen = false" class="block px-4 py-2 rounded-xl text-gray-700 hover:bg-gray-50 font-medium text-sm">
+        Catálogo
+      </a>
+      @if (authService.isLoggedIn()) {
+        <a routerLink="/profile" (click)="menuOpen = false" class="block px-4 py-2 rounded-xl text-gray-700 hover:bg-gray-50 font-medium text-sm">
+          Mi perfil
+        </a>
+        <button (click)="logout()" class="w-full text-left px-4 py-2 rounded-xl text-red-600 hover:bg-red-50 font-medium text-sm">
+          Cerrar sesión
+        </button>
+      } @else {
+        <a routerLink="/login" (click)="menuOpen = false" class="block px-4 py-2 rounded-xl text-gray-700 hover:bg-gray-50 font-medium text-sm">
+          Iniciar sesión
+        </a>
+        <a routerLink="/register" (click)="menuOpen = false" class="block px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold text-sm text-center">
+          Crear cuenta
+        </a>
+      }
+    </div>
+  }
+</nav>
+
+<!-- Spacer for fixed navbar -->
+<div class="h-16"></div>

@@ -1,0 +1,197 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex items-center justify-center py-32">
+        <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    } @else {
+
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Mi perfil</h1>
+          <p class="text-gray-500 text-sm mt-1">Gestiona tu información personal</p>
+        </div>
+        @if (!editMode()) {
+          <button (click)="startEdit()" class="btn-primary flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+            Editar perfil
+          </button>
+        }
+      </div>
+
+      <!-- Success -->
+      @if (success()) {
+        <div class="mb-6 flex items-center gap-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl px-4 py-3 text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          {{ success() }}
+        </div>
+      }
+
+      <!-- Error -->
+      @if (error()) {
+        <div class="mb-6 flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          {{ error() }}
+        </div>
+      }
+
+      <!-- Avatar Section -->
+      <div class="bg-white rounded-2xl border border-gray-100 p-6 mb-6">
+        <div class="flex items-center gap-5">
+          @if (user?.profileImageUrl) {
+            <img [src]="user!.profileImageUrl" [alt]="user!.firstName" class="w-20 h-20 rounded-2xl object-cover"/>
+          } @else {
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-2xl">
+              {{ user?.firstName?.charAt(0) }}
+            </div>
+          }
+          <div>
+            <h2 class="text-xl font-bold text-gray-900">{{ user?.firstName }} {{ user?.lastName }}</h2>
+            <p class="text-gray-500 text-sm">{{ user?.email }}</p>
+            <div class="flex gap-2 mt-2">
+              @for (role of user?.roles; track role) {
+                <span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">{{ role }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="bg-white rounded-2xl border border-gray-100 p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-6">Información personal</h3>
+
+        <form (ngSubmit)="saveProfile()">
+          <!-- Names -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
+              @if (editMode()) {
+                <input type="text" [(ngModel)]="firstName" name="firstName" class="input-field" required/>
+              } @else {
+                <p class="text-gray-900 py-3 px-4 bg-gray-50 rounded-lg text-sm">{{ user?.firstName || '—' }}</p>
+              }
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Apellido *</label>
+              @if (editMode()) {
+                <input type="text" [(ngModel)]="lastName" name="lastName" class="input-field" required/>
+              } @else {
+                <p class="text-gray-900 py-3 px-4 bg-gray-50 rounded-lg text-sm">{{ user?.lastName || '—' }}</p>
+              }
+            </div>
+          </div>
+
+          <!-- Email (readonly always) -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+            <p class="text-gray-900 py-3 px-4 bg-gray-50 rounded-lg text-sm flex items-center gap-2">
+              {{ user?.email }}
+              <span class="text-xs text-gray-400">(no editable)</span>
+            </p>
+          </div>
+
+          <!-- Phone -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
+            @if (editMode()) {
+              <input type="tel" [(ngModel)]="phone" name="phone" class="input-field" placeholder="987654321" maxlength="9" pattern="[0-9]{9}" required/>
+            } @else {
+              <p class="text-gray-900 py-3 px-4 bg-gray-50 rounded-lg text-sm">{{ user?.phone || '—' }}</p>
+            }
+          </div>
+
+          <!-- District -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Distrito</label>
+            @if (editMode()) {
+              <select [(ngModel)]="districtId" name="districtId" class="input-field">
+                <option [value]="null">Selecciona tu distrito</option>
+                @for (d of districts; track d.id) {
+                  <option [value]="d.id">{{ d.name }} - {{ d.city }}</option>
+                }
+              </select>
+            } @else {
+              <p class="text-gray-900 py-3 px-4 bg-gray-50 rounded-lg text-sm">
+                {{ user?.district ? user!.district!.name + ' - ' + user!.district!.city : '—' }}
+              </p>
+            }
+          </div>
+
+          <!-- Address -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
+            @if (editMode()) {
+              <input type="text" [(ngModel)]="address" name="address" class="input-field" placeholder="Av. Principal 123"/>
+            } @else {
+              <p class="text-gray-900 py-3 px-4 bg-gray-50 rounded-lg text-sm">{{ user?.address || '—' }}</p>
+            }
+          </div>
+
+          <!-- Biography -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Descripción personal</label>
+            @if (editMode()) {
+              <textarea
+                [(ngModel)]="biography"
+                name="biography"
+                class="input-field resize-none"
+                rows="4"
+                placeholder="Cuéntanos sobre ti..."
+                maxlength="1000"
+              ></textarea>
+              <p class="text-xs text-gray-400 mt-1">{{ biography.length }}/1000 caracteres</p>
+            } @else {
+              <p class="text-gray-900 py-3 px-4 bg-gray-50 rounded-lg text-sm min-h-[80px]">{{ user?.biography || '—' }}</p>
+            }
+          </div>
+
+          <!-- Payment Method -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Método de pago preferido</label>
+            @if (editMode()) {
+              <select [(ngModel)]="preferredPaymentMethod" name="preferredPaymentMethod" class="input-field">
+                <option value="">Sin preferencia</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Yape">Yape</option>
+                <option value="Plin">Plin</option>
+                <option value="Transferencia bancaria">Transferencia bancaria</option>
+                <option value="Tarjeta de crédito/débito">Tarjeta de crédito/débito</option>
+              </select>
+            } @else {
+              <p class="text-gray-900 py-3 px-4 bg-gray-50 rounded-lg text-sm">{{ user?.preferredPaymentMethod || '—' }}</p>
+            }
+          </div>
+
+          <!-- Action buttons -->
+          @if (editMode()) {
+            <div class="flex gap-3 pt-4 border-t border-gray-100">
+              <button type="submit" [disabled]="saving()" class="btn-primary flex items-center gap-2 py-3 px-6">
+                @if (saving()) {
+                  <span class="spinner"></span> Guardando...
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  Guardar cambios
+                }
+              </button>
+              <button type="button" (click)="cancelEdit()" [disabled]="saving()" class="btn-outline py-3 px-6">
+                Cancelar
+              </button>
+            </div>
+          }
+        </form>
+      </div>
+    }
+  </div>
+</div>
