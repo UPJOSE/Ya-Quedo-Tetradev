@@ -28,42 +28,179 @@ html, body {
   color: var(--text);
 }
 
+/* ---------- Base ---------- */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.15);
+}
+
+/* Scrollbar sutil */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* ---------- Tipografía ---------- */
+
+.heading-xl {
+  @apply text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 leading-[1.05];
+}
+
+.heading-lg {
+  @apply text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900;
+}
+
+.heading-md {
+  @apply text-2xl sm:text-3xl font-bold tracking-tight text-gray-900;
+}
+
+.heading-sm {
+  @apply text-lg sm:text-xl font-semibold text-gray-900;
+}
+
+.body-lg {
+  @apply text-lg sm:text-xl text-gray-500 leading-relaxed;
+}
+
+.caption {
+  @apply text-xs font-semibold uppercase tracking-widest text-gray-400;
+}
+
+.eyebrow {
+  @apply inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium;
+}
+
+/* ---------- Botones ---------- */
+
 .btn-primary {
-  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply inline-flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-2.5 px-6 rounded-xl
+    shadow-soft transition-all duration-200 ease-out
+    hover:bg-blue-700 hover:shadow-card-hover hover:-translate-y-px
+    focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600/20
+    active:translate-y-0 active:shadow-soft
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-soft disabled:hover:bg-blue-600;
 }
 
 .btn-outline {
-  @apply border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-5 rounded-lg transition-colors duration-200;
+  @apply inline-flex items-center justify-center gap-2 border border-gray-200 bg-white text-gray-700 font-semibold py-2.5 px-6 rounded-xl
+    shadow-soft transition-all duration-200 ease-out
+    hover:border-blue-300 hover:text-blue-700 hover:shadow-card
+    focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600/15
+    disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-ghost {
-  @apply text-gray-600 hover:text-gray-900 hover:bg-gray-100 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  @apply inline-flex items-center justify-center gap-2 text-gray-600 font-medium py-2.5 px-5 rounded-xl
+    transition-all duration-200
+    hover:text-gray-900 hover:bg-gray-100
+    focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-400/15;
 }
+
+/* ---------- Tarjetas ---------- */
 
 .card {
-  @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6;
+  @apply bg-white rounded-2xl shadow-soft border border-gray-100 p-6 sm:p-8 transition-shadow duration-300;
 }
 
+.card-hover {
+  @apply transition-all duration-300 ease-out hover:shadow-card-hover hover:-translate-y-1 hover:border-blue-100;
+}
+
+/* ---------- Inputs ---------- */
+
 .input-field {
-  @apply w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all;
+  @apply w-full border border-gray-200 bg-white rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400
+    shadow-soft transition-all duration-200
+    focus:outline-none focus:ring-4 focus:ring-blue-600/10 focus:border-blue-400
+    disabled:bg-gray-50 disabled:text-gray-400;
 }
 
 .input-field.error {
-  @apply border-red-400 focus:ring-red-400;
+  @apply border-red-300 focus:ring-red-500/10 focus:border-red-400;
 }
 
+/* ---------- Badges ---------- */
+
 .badge-verified {
-  @apply inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 text-xs font-medium px-2 py-1 rounded-full;
+  @apply inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-full ring-1 ring-inset ring-emerald-600/10;
 }
 
 .badge-available {
-  @apply inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-medium px-2 py-1 rounded-full;
+  @apply inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full ring-1 ring-inset ring-blue-600/10;
 }
 
 .badge-unavailable {
-  @apply inline-flex items-center gap-1 bg-gray-100 text-gray-500 text-xs font-medium px-2 py-1 rounded-full;
+  @apply inline-flex items-center gap-1 bg-gray-100 text-gray-500 text-xs font-semibold px-2.5 py-1 rounded-full ring-1 ring-inset ring-gray-500/10;
 }
+
+/* ---------- Loading ---------- */
 
 .spinner {
   @apply inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin;
+}
+
+.skeleton {
+  @apply relative overflow-hidden rounded-lg bg-gray-100;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 600px 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -600px 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
+}
+
+/* ---------- Animaciones de entrada ---------- */
+
+.reveal-1 { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both; }
+.reveal-2 { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
+.reveal-3 { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+.reveal-4 { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both; }
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
