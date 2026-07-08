@@ -53,6 +53,7 @@ public class Contract extends BaseEntity {
     public enum ContractStatus {
         PENDING,
         ACCEPTED,
+        REJECTED,
         IN_PROGRESS,
         FINISHED,
         CANCELLED

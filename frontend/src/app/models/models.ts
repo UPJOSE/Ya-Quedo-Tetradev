@@ -146,12 +146,21 @@ export interface ContractCreateDto {
 
 export interface ContractDto {
   id: number;
+  customer: UserDto;
+  technician: TechnicianCardDto;
+  serviceRequestId?: number;
   status: string;
   description?: string;
   address?: string;
   agreedPrice?: number;
+  priceCurrency?: string;
   scheduledDate?: string;
   createdAt: string;
+  finishedAt?: string;
+}
+
+export interface ContractStatusUpdateDto {
+  status: string;
 }
 
 export interface TechnicianSearchParams {

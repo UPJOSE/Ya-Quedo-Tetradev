@@ -38,6 +38,14 @@ export const routes: Routes = [
       import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
   },
   {
+    path: 'my-requests',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/my-requests/my-requests.component').then(
+        (m) => m.MyRequestsComponent
+      ),
+  },
+  {
     path: 'assistant',
     canActivate: [authGuard],
     loadComponent: () =>
