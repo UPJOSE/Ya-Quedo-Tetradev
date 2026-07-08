@@ -92,6 +92,8 @@ public class SecurityConfig {
         List<String> origins = new java.util.ArrayList<>(Arrays.asList(allowedOrigins.split(",")));
         origins.add("http://127.0.0.1:*");
         origins.add("http://localhost:*");
+        origins.add("https://*.vercel.app");
+        origins.add("https://ya-quedo-angular-*.vercel.app");
         configuration.setAllowedOriginPatterns(origins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
