@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -11,8 +11,14 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent {
   menuOpen = false;
+  scrolled = signal(false);
 
   constructor(public authService: AuthService) {}
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    this.scrolled.set(window.scrollY > 8);
+  }
 
   logout(): void {
     this.authService.logout();

@@ -1,20 +1,73 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-  <div class="w-full max-w-md">
-    <!-- Logo -->
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center gap-3 mb-4">
-        <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
-          <span class="text-white font-bold text-xl">YQ</span>
-        </div>
-        <span class="text-3xl font-bold text-gray-900">YA QUEDÓ</span>
-      </div>
-      <p class="text-gray-500 text-sm">Plataforma de servicios técnicos del hogar</p>
+<div class="min-h-[calc(100vh-4rem)] bg-white flex">
+  <!-- Panel izquierdo: marca y confianza -->
+  <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 items-center justify-center p-16">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-32 -left-32 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Card -->
-    <div class="bg-white rounded-3xl shadow-xl p-8">
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">Bienvenido de vuelta</h2>
-      <p class="text-gray-500 text-sm mb-8">Ingresa tus credenciales para continuar</p>
+    <div class="relative z-10 max-w-md">
+      <div class="flex items-center gap-3 mb-12">
+        <div class="w-11 h-11 bg-white/15 backdrop-blur-sm ring-1 ring-white/25 rounded-2xl flex items-center justify-center">
+          <span class="text-white font-bold text-lg">YQ</span>
+        </div>
+        <span class="text-2xl font-bold tracking-tight text-white">YA QUEDÓ</span>
+      </div>
+
+      <h2 class="text-4xl font-extrabold tracking-tight text-white leading-tight mb-6">
+        Tu hogar en buenas manos
+      </h2>
+      <p class="text-white/80 text-lg leading-relaxed mb-12">
+        Miles de peruanos ya contratan técnicos verificados con total confianza.
+      </p>
+
+      <div class="space-y-5">
+        <div class="flex items-center gap-4 bg-white/10 backdrop-blur-sm ring-1 ring-white/15 rounded-2xl px-5 py-4">
+          <div class="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div>
+            <p class="text-white font-semibold text-sm">Técnicos verificados</p>
+            <p class="text-white/70 text-xs mt-0.5">Antecedentes y habilidades comprobadas</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 bg-white/10 backdrop-blur-sm ring-1 ring-white/15 rounded-2xl px-5 py-4">
+          <div class="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div>
+            <p class="text-white font-semibold text-sm">Respuesta en minutos</p>
+            <p class="text-white/70 text-xs mt-0.5">Tiempo promedio de 8 minutos</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 bg-white/10 backdrop-blur-sm ring-1 ring-white/15 rounded-2xl px-5 py-4">
+          <div class="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <div>
+            <p class="text-white font-semibold text-sm">Pagos protegidos</p>
+            <p class="text-white/70 text-xs mt-0.5">Tu dinero seguro hasta completar el servicio</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel derecho: formulario -->
+  <div class="flex-1 flex items-center justify-center p-6 sm:p-12 bg-gray-50 lg:bg-white">
+    <div class="w-full max-w-md animate-fade-up">
+      <!-- Logo (móvil) -->
+      <div class="lg:hidden text-center mb-10">
+        <div class="inline-flex items-center gap-2.5">
+          <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-soft">
+            <span class="text-white font-bold text-base">YQ</span>
+          </div>
+          <span class="text-xl font-bold tracking-tight text-gray-900">YA QUEDÓ</span>
+        </div>
+      </div>
+
+      <h2 class="heading-md mb-3">Bienvenido de vuelta</h2>
+      <p class="text-gray-500 text-sm mb-10">Ingresa tus credenciales para continuar</p>
 
       <!-- Error -->
       @if (error()) {
