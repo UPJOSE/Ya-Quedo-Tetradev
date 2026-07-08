@@ -56,13 +56,16 @@ public class TechnicianCatalogTool {
     @Tool(description = "Search available technicians filtering by category (optional), " +
         "district (optional) and maximum budget in PEN soles (optional). " +
         "Returns up to 20 candidates ordered by rating and completed jobs (best first). " +
-        "This is THE main tool to find candidates for a recommendation.")
+        "This is THE main tool to find candidates for a recommendation. " +
+        "IMPORTANT: for optional parameters, OMIT them from the JSON call if they do not apply. " +
+        "Do NOT pass null. Example valid calls: {\"categoryName\":\"Plomero\"} or " +
+        "{\"categoryName\":\"Plomero\",\"maxBudget\":300} or just {}.")
     public List<RecommendedTechnicianSummary> searchTechnicians(
-        @ToolParam(description = "Category name exactly as returned by getCategories, or null to include all",
+        @ToolParam(description = "Category name exactly as returned by getCategories. OMIT if not filtering by category.",
                    required = false) String categoryName,
-        @ToolParam(description = "District name exactly as returned by getDistricts, or null to include all",
+        @ToolParam(description = "District name exactly as returned by getDistricts. OMIT if not filtering by district.",
                    required = false) String districtName,
-        @ToolParam(description = "Maximum acceptable min-price in PEN soles, or null for no limit",
+        @ToolParam(description = "Maximum acceptable min-price in PEN soles. OMIT if no budget limit.",
                    required = false) BigDecimal maxBudget
     ) {
         Specification<Technician> spec = (root, query, cb) -> {
