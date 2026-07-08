@@ -38,11 +38,11 @@ export const routes: Routes = [
       import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
   },
   {
-    path: 'ai-recommendation',
+    path: 'assistant',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./pages/ai-recommendation/ai-recommendation.component').then(
-        (m) => m.AiRecommendationComponent
+      import('./pages/assistant/assistant.component').then(
+        (m) => m.AssistantComponent
       ),
   },
   { path: '**', redirectTo: '' },
