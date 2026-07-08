@@ -37,5 +37,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
   },
+  {
+    path: 'ai-recommendation',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/ai-recommendation/ai-recommendation.component').then(
+        (m) => m.AiRecommendationComponent
+      ),
+  },
   { path: '**', redirectTo: '' },
 ];

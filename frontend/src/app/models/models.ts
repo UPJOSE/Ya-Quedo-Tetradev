@@ -166,3 +166,43 @@ export interface TechnicianSearchParams {
   page?: number;
   size?: number;
 }
+
+// AI Recommendation (Sprint 4)
+export interface AiRecommendationRequestDto {
+  description: string;
+  categoryId?: number | null;
+  districtId?: number | null;
+  budgetMax?: number | null;
+}
+
+export interface RecommendedTechnicianDto {
+  id: number;
+  fullName: string;
+  profileImageUrl?: string;
+  categoryName?: string;
+  averageRating?: number;
+  totalReviews?: number;
+  completedJobs?: number;
+  experienceYears?: number;
+  districtName?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  priceCurrency?: string;
+  available?: boolean;
+  verified?: boolean;
+  recommendationScore?: number;
+  distanceKm?: number;
+  aiMatchReason?: string;
+}
+
+export interface RecommendationDto {
+  id: number;
+  detectedCategory?: string;
+  priority?: string;
+  requiredSkills?: string[];
+  estimatedDuration?: string;
+  complexity?: string;
+  aiExplanation?: string;
+  technicians: RecommendedTechnicianDto[];
+  createdAt?: string;
+}
