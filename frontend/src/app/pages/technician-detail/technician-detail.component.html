@@ -216,10 +216,10 @@
 <!-- Hire Modal -->
 @if (showModal()) {
   <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-950/40 backdrop-blur-sm animate-fade-in" (click)="closeModal()">
-    <div class="bg-white rounded-3xl shadow-float w-full max-w-lg animate-scale-in" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Solicitar servicio">
+    <div class="bg-white rounded-3xl shadow-float w-full max-w-lg max-h-[90vh] overflow-y-auto animate-scale-in" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Solicitar servicio">
 
       <!-- Modal Header -->
-      <div class="flex items-center justify-between p-6 border-b border-gray-100">
+      <div class="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-sm z-10 rounded-t-3xl">
         <div>
           <h2 class="text-xl font-bold text-gray-900">Solicitar servicio</h2>
           <p class="text-sm text-gray-500 mt-0.5">{{ technician?.fullName }} · {{ technician?.categoryName }}</p>
@@ -255,7 +255,8 @@
             </div>
           }
 
-          <div class="space-y-4">
+          <div class="space-y-5">
+            <!-- Description -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">
                 ¿Qué necesitas? <span class="text-red-500">*</span>
@@ -269,6 +270,7 @@
               ></textarea>
             </div>
 
+            <!-- Address -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">
                 Dirección del servicio <span class="text-red-500">*</span>
@@ -282,27 +284,93 @@
               />
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1.5">Presupuesto (S/)</label>
-                <input
-                  type="number"
-                  [(ngModel)]="formAgreedPrice"
-                  name="agreedPrice"
-                  placeholder="Opcional"
-                  min="0"
-                  class="input-field"
-                />
+            <!-- Price -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Presupuesto (S/)</label>
+              <input
+                type="number"
+                [(ngModel)]="formAgreedPrice"
+                name="agreedPrice"
+                placeholder="Opcional"
+                min="0"
+                class="input-field"
+              />
+            </div>
+
+            <!-- Date & Time Section -->
+            <div class="pt-2">
+              <div class="flex items-center gap-2 mb-3">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <label class="text-sm font-medium text-gray-700">Fecha y hora preferida</label>
+                <span class="text-xs text-gray-400 font-normal">(opcional)</span>
               </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha preferida</label>
-                <input
-                  type="datetime-local"
-                  [(ngModel)]="formScheduledDate"
-                  name="scheduledDate"
-                  class="input-field"
-                />
+
+              <!-- Quick date chips -->
+              <div class="grid grid-cols-4 gap-2 mb-3">
+                @for (qd of quickDateLabels; track qd.days) {
+                  <button
+                    type="button"
+                    (click)="selectQuickDate(qd.days)"
+                    [class]="formSelectedDate === (new Date(Date.now() + qd.days * 86400000)).toISOString().split('T')[0]
+                      ? 'flex flex-col items-center py-2.5 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 transition-all'
+                      : 'flex flex-col items-center py-2.5 rounded-xl border border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50/50 transition-all'"
+                  >
+                    <span class="text-xs font-semibold">{{ qd.label }}</span>
+                    <span class="text-[10px] text-gray-400 mt-0.5">{{ qd.sublabel }}</span>
+                  </button>
+                }
               </div>
+
+              <!-- Custom date input -->
+              <input
+                type="date"
+                [(ngModel)]="formSelectedDate"
+                name="selectedDate"
+                class="input-field text-sm mb-4"
+                [min]="new Date().toISOString().split('T')[0]"
+              />
+
+              <!-- Time slots -->
+              @if (formSelectedDate) {
+                <div class="mb-3">
+                  <p class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wide">Horario disponible</p>
+                  <div class="grid grid-cols-5 gap-2">
+                    @for (slot of timeSlots; track slot.value) {
+                      <button
+                        type="button"
+                        (click)="selectTimeSlot(slot.value)"
+                        [class]="formSelectedTimeSlot === slot.value
+                          ? 'py-2 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow-soft transition-all'
+                          : 'py-2 rounded-lg text-xs font-medium bg-gray-50 text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-all'"
+                      >
+                        {{ slot.label }}
+                      </button>
+                    }
+                  </div>
+                </div>
+
+                <!-- Custom time -->
+                <div class="flex items-center gap-2">
+                  <div class="flex-1 h-px bg-gray-100"></div>
+                  <span class="text-xs text-gray-400 font-medium">o hora personalizada</span>
+                  <div class="flex-1 h-px bg-gray-100"></div>
+                </div>
+                <input
+                  type="time"
+                  [(ngModel)]="formCustomTime"
+                  name="customTime"
+                  (ngModelChange)="onCustomTimeChange()"
+                  class="input-field text-sm mt-2"
+                />
+
+                <!-- Selected date preview -->
+                @if (hasScheduledDate) {
+                  <div class="mt-3 flex items-center gap-2.5 bg-blue-50 border border-blue-100 rounded-xl px-4 py-2.5">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span class="text-sm font-medium text-blue-700 capitalize">{{ formattedScheduledDate }}</span>
+                  </div>
+                }
+              }
             </div>
           </div>
 

@@ -28,6 +28,22 @@ export class TechnicianDetailComponent implements OnInit {
   formAddress = '';
   formAgreedPrice: number | null = null;
   formScheduledDate = '';
+  formSelectedDate = '';
+  formSelectedTimeSlot = '';
+  formCustomTime = '';
+
+  timeSlots = [
+    { label: '9:00 AM', value: '09:00' },
+    { label: '10:00 AM', value: '10:00' },
+    { label: '11:00 AM', value: '11:00' },
+    { label: '12:00 PM', value: '12:00' },
+    { label: '1:00 PM', value: '13:00' },
+    { label: '2:00 PM', value: '14:00' },
+    { label: '3:00 PM', value: '15:00' },
+    { label: '4:00 PM', value: '16:00' },
+    { label: '5:00 PM', value: '17:00' },
+    { label: '6:00 PM', value: '18:00' },
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -60,6 +76,9 @@ export class TechnicianDetailComponent implements OnInit {
     this.formAddress = '';
     this.formAgreedPrice = null;
     this.formScheduledDate = '';
+    this.formSelectedDate = '';
+    this.formSelectedTimeSlot = '';
+    this.formCustomTime = '';
     this.contractError.set('');
     this.contractSuccess.set(false);
     this.showModal.set(true);
@@ -83,12 +102,14 @@ export class TechnicianDetailComponent implements OnInit {
     this.contractLoading.set(true);
     this.contractError.set('');
 
+    const scheduledDate = this.buildScheduledDate();
+
     this.contractService.createContract({
       technicianId: this.technician.id,
       description: this.formDescription,
       address: this.formAddress,
       agreedPrice: this.formAgreedPrice ?? undefined,
-      scheduledDate: this.formScheduledDate || undefined,
+      scheduledDate: scheduledDate || undefined,
     }).subscribe({
       next: () => {
         this.contractLoading.set(false);
@@ -99,6 +120,53 @@ export class TechnicianDetailComponent implements OnInit {
         this.contractError.set(err?.error?.message || 'Error al enviar la solicitud. Intenta nuevamente.');
       },
     });
+  }
+
+  buildScheduledDate(): string {
+    if (!this.formSelectedDate) return '';
+    const time = this.formSelectedTimeSlot || this.formCustomTime;
+    if (!time) return '';
+    return `${this.formSelectedDate}T${time}:00`;
+  }
+
+  selectQuickDate(daysFromNow: number): void {
+    const d = new Date();
+    d.setDate(d.getDate() + daysFromNow);
+    this.formSelectedDate = d.toISOString().split('T')[0];
+  }
+
+  get quickDateLabels(): { label: string; sublabel: string; days: number }[] {
+    const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const result: { label: string; sublabel: string; days: number }[] = [];
+    for (let i = 0; i < 4; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      const label = i === 0 ? 'Hoy' : i === 1 ? 'Mañana' : `${d.getDate()} ${months[d.getMonth()]}`;
+      result.push({ label, sublabel: days[d.getDay()], days: i });
+    }
+    return result;
+  }
+
+  selectTimeSlot(value: string): void {
+    this.formSelectedTimeSlot = value;
+    this.formCustomTime = '';
+  }
+
+  onCustomTimeChange(): void {
+    this.formSelectedTimeSlot = '';
+  }
+
+  get hasScheduledDate(): boolean {
+    return !!this.buildScheduledDate();
+  }
+
+  get formattedScheduledDate(): string {
+    const dt = this.buildScheduledDate();
+    if (!dt) return '';
+    const d = new Date(dt);
+    return d.toLocaleDateString('es-PE', { weekday: 'short', day: '2-digit', month: 'short' }) +
+      ' · ' + d.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
   }
 
   formatPrice(min?: number, max?: number): string {
